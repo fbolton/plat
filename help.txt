@@ -1,0 +1,153 @@
+p	plot:  plots the foam directly to screen.
+
+P [-n <num>] [-hatch] [-ps <filename>] [-hpgl <filename>] [-tek <filename>]
+Plot with options: This has a number of optional arguments which may be
+used in any combination.  With integer argument '-n <num>', it
+plots nXn multiple copies of the periodic box and the argument '-hatch'
+causes the Plateau borders to be shaded in.  It is possible to save the
+plot to file using one of the last three options: '-ps' for Postscript,
+'-hpgl' for HPGL format and '-tek' for Tektronix format.
+
+a	adjust:  this routine allows pending increments to vertices to be
+made without invoking equilibration.  However, the usual safeguards
+against anomolous structures are called from the equilibration
+routine.
+
+e	equilibrate:  incorporate any pending increments and bring the
+structure to equilibrium, iterating a maximum of 'maxiter' times.
+Convergence is controlled principally via 'areasup' and 'equilsup'.
+See command 's'.
+
+E	Equilibrate with plotting:  equilibrates the system, plotting
+the system after each iteration. This is very useful in interactive
+mode.  Dynamic 'zooming' is also possible---use the mouse buttons.
+
+d	diffuse:  diffuses gas from cell to cell via Von Neumann's law.
+The size of this step is determined by the parameter 'diffuserate'.
+
+D	Diffuse with option:  at present identical with command 'd'.
+
+F [-e][-E][-d] f	makefraction:  used to set and alter the
+volume-fraction of the system (denoted as 'phi' in usual soap froth
+theory).  Options '-e','-E' and '-d' are mutually exclusive and
+optional, as implemented.  The -e/-E options select equilibration
+without/with plotting respectively---the default is *without* plotting.
+The floating point parameter 'f' is a number in [0,1] and sets the new
+volume-fraction 'phi'.  Option -d causes the argument 'f' to be
+interpreted as an increment to 'phi' instead.
+NB:  The algorithm used presently suffers from a flaw which may lead the
+program to fail as percolation is approached.
+
+b	boxstrain (Hencky strain):  applies a small increment of
+extensional strain to the system.  The step size is determined by the
+first occurrence of the command 'B' (see below).  The system is *not*
+subsequently equilibrated.  Equilibration must be explicitly requested
+using command 'e' for example.
+
+B f	Boxstrain with option:  strain the box, setting the step size
+'eps' to be equal to the real number 'f'.  This command ought to be
+called before calling command 'b' in order to set 'eps'.
+
+h, H	help:  displays this help message.
+
+g, G	graphics interactive:  Opens an X window for using interactive
+graphics and a simple user interface.
+
+i	infowrite:  writes a line of data to the file 'info.pb' (and
+also, possibly, prints some data on the screen).  This is envisaged as
+the primary avenue of data output from the program and the file
+'info.pb' is stored in tab-delimited format.  Which
+data is to be output must be selected using the command 'I' *before* the
+first occurrence of thes command 'i'.  The file 'info.pb' is
+automatically closed upon exiting the program.
+
+I -c, I [-w] <dataname>	Infowrite with options:  the command
+'I -c' simply closes the file 'info.pb'.  Setting 'I <dataname>'
+requests that 'dataname' be one of the data fields listed in 'info.pb'.
+With the optional argument 'w' this information will also be printed to
+the screen whenever command 'i' is encountered.
+
+List of 'datanames'...
+muside		mu2 of sides distribution
+rhoside		distribution of sides
+muarea		mu2 of area distribution
+arean		distribution of areas
+bside		distribution of sides of Plateau borders
+netenergy	energy of network
+henckyeps	present value of Hencky strain parameter
+elosscount	a count of how many edges have been lost in the present
+		run (not physically significant)
+bpinchcount	a count of the number of border pinches in this run (not
+		physically significant)
+phi		present bolume-fraction
+nbar		average number of sides, counting all cells
+edgefrac	average fraction of an edge obscured by Plateau borders
+z		average co-ordination of a cell.  This is *almost* the
+		same as 'nbar' except that here free-floating cells are
+		not included in the average.
+arootbar	the average of the square root of cell area---indicative
+		of the average cell radius
+
+r	read foam:  reads in a system from the default file 'foam.pb'.
+
+R <filename>	Read foam:  reads the system in from the file 'filename'.
+
+w	write foam:  writes the system to the default file 'foam.pb'.
+
+W <filename>	Write foam:  writes the system to the file 'filename'.
+
+n	hexnet:  initialises the system as a unit cell of a hexagonal
+lattice (which contains two hexagonal cells).  It is initialised with
+Plateau borders which cover 0.4 of the cell-cell edges.
+
+N nx ny f	hexNet:  initialises the system as a hexagonal nxXny
+lattice (containing 2 nxXny cells).  Parameter 'f' gives the fraction of
+a cell-cell edge covered by Plateau borders.
+
+v	voronoi network:  initialise the system as a Voronoi network
+with default parameters and the maximum number of cells possible
+(this command is *not* particularly recommended)
+
+V [-r f] n	Voronoi network:  request a Voronoi network with 'n'
+cells.  The optional argument '-r' allows you to specify the hard-disk
+radius 'f'.  The parameter 'f' lies in the range [0,1] where 0
+represents maximum disorder.  In practice 'f' cannot be too close to
+1.0 .  It is possible to specify a different random seed if a new
+starting point for the network is desired.  See the command 'S'.
+
+S -w <setname>, S <setname> f	Set:  when used with the option '-w'
+gives the present value of the parameter 'setname'.  The second syntax
+sets parameter 'setname' to the new value 'f'.
+The current list of settable parameters is:
+vdamp, vvdamp, pdamp, bpdamp, bprelax, minbfrac, maxbfrac, lengthdelta,
+pressuredelta, diffuserate, areasup, bareasup, maxdv, maxdvv, equilsup,
+minvvlen, filmwid, cosminang, rfrac, notopol, minareasup, maxiter,
+vorseed.
+
+q	quit  quit the program.
+
+x	exit:  exit the program, unless this command occurs within a set
+of braces.
+
+Zooming: When in interactive graphics mode (after typing the command
+'g' or 'G') there is a zoom feature available via the mouse.  By
+clicking the left mouse button you can zoom into a location and by
+clicking the right mouse button you can zoom out again.  The middle
+mouse button changes the centre of the viewing port without changing the
+scale.  In order to restore the original default scalings just click on
+the button 'reset plot'.
+
+Repetitive Loops Using Braces:
+	Simple repetitive looping may be obtained with this simple
+syntax
+	{...<commands>...}n
+A group of commands is enclosed in curly braces immediately
+followed by an integer.  The integer determines the number of times that
+the commands within the braces are executed.  These loops may be
+nested.
+
+
+Spacing of Commands:
+	The general rule is that spaces are optional, except where necessary
+to remove ambiguity.  Command loops enclosed in braces may spread over several
+input lines.

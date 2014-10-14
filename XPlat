@@ -1,0 +1,60 @@
+!
+! Set initial size of application
+!
+*XmMainWindow.width:	600
+*XmMainWindow.height:	870
+!
+! Make the Frame bigger than the application (scrollbars!)
+!
+! *XmFrame.width:		10
+! *XmFrame.height:	400
+*frame.topAttachment:	XmATTACH_FORM
+!
+! Make MainWindow use scrollbars...
+! *XmMainWindow.scrollingPolicy:	XmAUTOMATIC
+*XmMainWindow.commandWindowLocation:  XmCOMMAND_BELOW_WORKSPACE
+!
+! Command widget options
+!
+*XmCommand.promptString:  plat>
+*XmCommand.height:	150
+!
+! File menu
+!
+*fileButton.labelString: file
+!
+! Workspace options
+!
+*rowForm.bottomAttachment:		XmATTACH_FORM
+*rowForm.rubberPositioning:		False
+*leftButtonForm.rubberPositioning:	False
+*rightButtonForm.rubberPositioning: 	False
+
+*resetPlotButton.defaultButtonShadowThickness:  0
+*showEquilButton.defaultButtonShadowThickness:  0
+*pauseButton.defaultButtonShadowThickness: 	0
+*stopButton.defaultButtonShadowThickness:  	0
+
+! *resetPlotButton.topAttachment:		XmATTACH_FORM
+
+! *showEquilButton.topAttachment:		XmATTACH_WIDGET
+! *showEquilButton.topWidget:		resetPlotButton
+
+! *pauseButton.topAttachment:		XmATTACH_FORM
+
+! *stopButton.topAttachment:		XmATTACH_WIDGET
+! *stopButton.topWidget:			pauseButton
+
+! *leftButtonCol.topAttachment:		XmATTACH_WIDGET
+! *leftButtonCol.topWidget:		frame
+
+*rightButtonCol.leftAttachment:		XmATTACH_WIDGET
+*rightButtonCol.leftWidget:		leftButtonCol
+
+!
+! Button Labels
+!
+*resetPlotButton.labelString:		Reset Plot
+*showEquilButton.labelString:		Show Equilibration
+*pauseButton.labelString:		Pause
+*stopButton.labelString:		Stop
