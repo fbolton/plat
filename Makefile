@@ -10,7 +10,7 @@ P_SRC = plat.c plinit.c plequil.c pldiffus.c plminor.c plio.c mgl.c
 CFLAGS = -DDEBUG
 
 # for X11
-GRAPHLIB= -L/usr/lib/X11R5 -lXm -lXt -lX11
+GRAPHLIB= -L/usr/lib64 -lXm -lXt -lX11
 
 plat: $(P_OBJ) include.h machine.h
 	$(CC) $(CFLAGS) $(P_OBJ) -lm -o plat

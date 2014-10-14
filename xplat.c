@@ -269,7 +269,7 @@ main(int argc, char **argv)
   /*
    * 'X' Window Variables...
    */
-  static void SetUpPixmap();
+  void SetUpPixmap(Widget);
   void Test();
   Widget topLevel, mainWindow, menuBar, frame;
   Widget fileButton, fileMenu, quit, pauseButton, stopButton,
@@ -481,7 +481,7 @@ main(int argc, char **argv)
   XtAppMainLoop(app_context);
 }
 
-static void
+void
 SetUpPixmap(Widget w)
 {
   XGCValues values;

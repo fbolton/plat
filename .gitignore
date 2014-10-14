@@ -1,0 +1,6 @@
+*.o
+plat
+xplat
+info.pb
+.cproject
+.project

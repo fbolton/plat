@@ -12,7 +12,7 @@
 
 /* Include the following line to generate a file of Hewlett-Packard Graphics
 Language.  This is written to the file 'hpgl.p' */
-#define HPGL
+/* #define HPGL */
 
 /* Include the following line to generate a file for use with the O'Reilly
 Hewlett-Packard Printer */
