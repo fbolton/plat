@@ -236,7 +236,7 @@ short vlist[MVERT], clist[MCELL], blist[MBORD], bublist[MCELL], vnbr[MVERT][3],
       vper[MVERT][3], cadj[MVERT][3];
 short nbsides[MBORD], ncsides[MCELL], iel[MELOST];
 short nv, nc, nb, nbub=0, onv, onc, onb, nel;
-short elosscount, bpinchcount;
+int elosscount, bpinchcount;
 REAL tfoam=0.0, boxwid=1.0, boxhgt=1.0, netenergy, henckyeps, volfrac=0.0;
 REAL lengthdelta, pressuredelta, equilsup, filmwid, minvvlen,
       diffuserate, bprelax, areasup, bareasup, minbfrac, maxbfrac, maxdv,
@@ -716,7 +716,8 @@ short nestlevel;
   void vfoamplot(), foamplot(), polyplot(), voronoi(), hexnet(),
        vortrans(), ptbox(), hencky(), s_execute(), diffuse(),
        makefraction(), setsconst(), foamin(), foamout(),
-       infoopen(), infowrite(), infoclose(), setinfo(), constantout();
+       infoopen(), infowrite(), infoclose(), setinfo(), constantout(),
+       cadjm();
 #ifdef IRIS
   void zoom(), mgltest();
 #endif
@@ -812,7 +813,7 @@ short nestlevel;
         case 'a' : equil(1); break;
         case 'e' : j=0;
                    do {
-                     if (xuser_show_equil==1) foamplot(0);
+         /*            if (xuser_show_equil==1) foamplot(0);
 		     if (XtAppPending(app_context)) {
 		       XtAppProcessEvent(app_context,XtIMXEvent);
 		     }
@@ -820,10 +821,11 @@ short nestlevel;
 		       if (XtAppPending(app_context)) {
 		         XtAppProcessEvent(app_context,XtIMXEvent);
 		       }
-		     };
+		     };*/
 		     j++;
                    } while (equil(0)>equilsup && ((REAL) j)<smaxiter
 			    && !xuser_stop);
+		   cadjm();
                    printf("network energy = %f\n",netenergy);
                    printf("%d iterations taken...\n",j);
                    break;
@@ -844,6 +846,7 @@ short nestlevel;
 		     j++;
                    } while (equil(0)>equilsup && ((REAL) j)<smaxiter
 			    && !xuser_stop);
+		   cadjm();
                    printf("network energy = %f\n",netenergy);
                    printf("%d iterations taken...\n",j);
                    break;
