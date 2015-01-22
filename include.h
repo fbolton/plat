@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
 #include "machine.h"
 
@@ -111,7 +112,7 @@ typical cell radius */
 #define DFLTMAXDVV 0.01 /* sets the largest allowed distortion of a Plateau
 border - given as a fraction of the typical border radius */
 
-#define MAXITER 250  /* sets the max. no. of iterations per equilibration */
+#define MAXITER 1000  /* sets the max. no. of iterations per equilibration */
 
 #define DFLTEQUILSUP 0.02  /* taken as the usual convergence value
 for the 'sup' which is returned by 'equil()'. It is expressed as a
@@ -255,7 +256,7 @@ extern short vlist[MVERT], clist[MCELL], blist[MBORD], bublist[MCELL],
              vnbr[MVERT][3], vper[MVERT][3], cadj[MVERT][3];
 extern short nbsides[MBORD], ncsides[MCELL], iel[MELOST];
 extern short nv, nc, nb, nbub, onv, onc, onb, nel;
-extern short elosscount, bpinchcount;
+extern int elosscount, bpinchcount;
 extern REAL tfoam, boxwid, boxhgt, netenergy, henckyeps, volfrac;
 extern REAL lengthdelta, pressuredelta, equilsup, filmwid, minvvlen,
             diffuserate, bprelax, areasup, bareasup, minbfrac, maxbfrac,
