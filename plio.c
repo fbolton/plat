@@ -944,3 +944,83 @@ boolean wflag, fflag;
   }
   plerror("requested unrecognized information");
 }
+
+/*****************************************************************************
+ ***     * *    * *      * *                          * *    * *    * *    ***
+ ***    *   * *    *  *     *      C A D J M ( )   *     * *    * *    *   ***
+ ***   *    *      *        *                   *        *      *      *   ***
+ *****************************************************************************
+ *
+ *	Subroutine:	cadjm()
+ *
+ *	Arguments:	 
+ *
+ *	Return value:	none
+ *
+ *	Action:		Traveses all cells and for each cell, walks it's	
+ *			perimeter, recording all neighbours in an 
+ *			adjacency matrix.
+ *			
+ *			This matrix is then checked for symmetry and
+ *			then output into a sequentially numbered file.
+ *			
+ *
+ *****************************************************************************/
+void cadjm()
+{
+  FILE * matout; // file pointer to write matrix out
+  static int callnumb = 0; // counter to give each file a unique name
+  char filename[20]; // string for filename
+  sprintf(filename,"mat%03d.dat",callnumb);
+  if( (matout = fopen(filename,"w")) == NULL){
+    plerror("error opening file for adj mat output");
+    return;
+  }
+  /*
+   * Allocate the adjacency matrix and set up simple 2 dimensional array
+   */
+  int ** adjmat = calloc(nc,sizeof(int*));
+  int * data = calloc(nc*nc, sizeof(int));
+  int c,i,ii,k;
+  for(c=0;c<nc;c++) adjmat[c] = data + c*nc;
+
+  for(c=0;c<nc;c++){ // for each cell
+    adjmat[c][c] = 1;
+    for (ii=0; ii<nv; ii++) { // find a vertex on that cell
+      i=vlist[ii];
+      if (c==cadj[i][k=1]) break;
+      if (c==cadj[i][k=2]) break;
+    }
+    if (k==2) { i=vnbr[i][0]; k=1; } // chose orientation
+    ii=i; // remember starting point
+    do {
+      k = cadj[i][2]; // cell on 'left' is a neighbour
+      adjmat[c][k] = 1;
+      i=vnbr[i][2]; i=vnbr[i][0]; // walk perimeter
+    } while (i!=ii); // until you return to start
+  }
+
+  /*
+   * check that resulting matrix is symetric
+   */
+  for(c=0;c<nc;c++){
+    for(k=c;k<nc;k++){
+      if(adjmat[c][k] != adjmat[k][c])
+        plerror("adjacency matrix is not symmetric!");
+    }
+  }
+
+  for(c=0;c<nc;c++){
+    for(k=0;k<nc;k++){
+      fprintf(matout,"%d\t",adjmat[c][k]);
+    }
+    fprintf(matout,"\n");
+  }
+  /* 
+   *  free all allocated memory and close all opened filepointers
+   */
+  free(data);
+  free(adjmat);
+  fclose(matout);
+  callnumb++;
+}
