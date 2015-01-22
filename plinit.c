@@ -1,4 +1,5 @@
 #include "include.h"
+#include <sys/time.h>
 
 /*********************/
 /* Hexagonal network */
@@ -214,6 +215,7 @@ short *pnc;
   short i, j, nt=0, np=0;
   boolean flag;
   void plerror(), vortrans();
+	struct timeval now;
   rseed= (int) svorseed;
   /* 'rminfrac' expresses the min radius as fraction of the seperation */
   /* required for hexagonal close packing of circles. */
@@ -223,7 +225,13 @@ short *pnc;
     *pnc=0; plerror("hard disc too large in routine vorspray");
     return;
   }
-  if (rseed!=0) { ran3(-rseed); rseed=0; svorseed=0.0; }
+  if (rseed!=0) { 
+#ifndef FIXEDSEED
+		gettimeofday(&now,NULL);
+		rseed = now.tv_usec;
+#endif
+		ran3(-rseed); 
+		rseed=0; svorseed=0.0; }
   x[0]=(ran3(0)-0.5)*wid; y[0]=(ran3(0)-0.5)*hgt; np++;
   while (np<*pnc) {
     nt=0;
