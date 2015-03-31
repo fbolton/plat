@@ -209,7 +209,7 @@ short i, i1;
 {
   REAL x, y;
   x=cx[i]+boxwid*PERX(i1); y=cy[i]+boxhgt*PERY(i1);
-  if ((x<-boxwid) || (x>boxwid) || (y<-boxhgt) || (y>boxhgt)) return FALSE;
+  if ((x<-boxwid/2.0) || (x>boxwid/2.0) || (y<-boxhgt/2.0) || (y>boxhgt/2.0)) return FALSE;
   else return TRUE;
 }
 

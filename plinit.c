@@ -815,16 +815,18 @@ short i, i1, j, j1, *k, *k1, jj, jj1;
      * and we require that for *all* of these points that they lie outside the
      * circle of centre (xc, yc) and radius `r1', otherwise set flag=FALSE.
      */
-            tricen(x1,y1,x2,y2,x3,y3,&xc,&yc);
-            r1=linlen2(xc,yc,x1,y1); flag=TRUE;
-            for (m1=mo[mm1=0]; (mm1<9) && flag; m1=mo[++mm1])
-              for (m=0; (m<nc) && flag; m++)
-                if ((i!=m || i1!=m1) && (j!=m || j1!=m1) &&
-                  (*k!=m || *k1!=m1)) {
-                  xm=cx[m]+wid*PERX(m1); ym=cy[m]+hgt*PERY(m1);
-                  r2=linlen2(xc,yc,xm,ym);
-                  if (r2<r1) flag=FALSE;
-                }
+            flag=FALSE;
+            if (tricen(x1,y1,x2,y2,x3,y3,&xc,&yc)) {
+              r1=linlen2(xc,yc,x1,y1);
+              flag=TRUE;
+              for (m1=mo[mm1=0]; (mm1<9) && flag; m1=mo[++mm1])
+                for (m=0; (m<nc) && flag; m++)
+                  if ((i!=m || i1!=m1) && (j!=m || j1!=m1) && (*k!=m || *k1!=m1)) {
+                    xm=cx[m]+wid*PERX(m1); ym=cy[m]+hgt*PERY(m1);
+                    r2=linlen2(xc,yc,xm,ym);
+                    if (r2<r1) flag=FALSE;
+                  }
+            }
             if (flag) {
 	      /*
 	       * Delauney triangle has been successfully found so

@@ -34,11 +34,11 @@
 /* The following three parameters MVERT, MBORD and MCELL all bear exact
 ratios to each other (as shown) and *must* be changed together. */
 
-#define MVERT 3000  /* Max no. of vertices:  MVERT=6*MCELL */
+#define MVERT 30000  /* Max no. of vertices:  MVERT=6*MCELL */
 
-#define MBORD 1000  /* Max no. of Plateau borders:  MBORD=2*MCELL */
+#define MBORD 10000  /* Max no. of Plateau borders:  MBORD=2*MCELL */
 
-#define MCELL 500  /* Max no. of cells:  Fixes the above parameters. */
+#define MCELL 5000  /* Max no. of cells:  Fixes the above parameters. */
 
 #define MSTRING 256  /* Max length of a command string */
 
