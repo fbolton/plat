@@ -1881,7 +1881,7 @@ REAL dptol;
     d=linlen(x2,y2,x3,y3); r=BRADIUS(p1,pb=bp[cadj[i][0]]);
     if (d > 2.0*r*cosminang) {
       /* Pop the arc! */
-      if (darea[c]>0.0) {
+      if (darea[c]>0.0 && !foamlike) {
         setlarc(&vper[i][2],la=TRUE); setlarc(&vper[j][1],la=TRUE);
       }
       else {

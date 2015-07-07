@@ -54,12 +54,11 @@ REAL *dx1, *dy1;
   REAL bcangle1(), bcangle2(), barcangle(), v[2], m[2][2], linlen();
   boolean la11, la12, larc(), arccentre(), arcbrk;
   void matinv2(), vnbrxy(), bordpop();
+
   del=lengthdelta; del2=del/2.0; delp2=pressuredelta/2.0;
   x1=vx[i]; y1=vy[i];
   vnbrxy(i,0,&x2,&y2); vnbrxy(i,1,&x11,&y11); vnbrxy(i,2,&x12,&y12);
-  if (linlen(x1,y1,x2,y2)<minvvlen) {
-    *dx1= *dy1=0.0; return;
-  }
+
   c1=cadj[i][2]; c2=cadj[i][1];
   p1=cp[c1]; p2=cp[c2]; pb=bp[cadj[i][0]];
   la11=larc(i,1); la12=larc(i,2);
@@ -100,6 +99,11 @@ REAL *dx1, *dy1;
       v[1]= PI-bcangle2(x11,y11,x1,y1,x2,y2,p1,p2,pb,la11,&arcbrk);
     }
   }
+
+  if (linlen(x1,y1,x2,y2)<minvvlen) {
+    *dx1= *dy1=0.0; return;
+  }
+
   dplus=bcangle1(x12,y12,x1+del2,y1,x2,y2,p2,p1,pb,la12,&arcbrk);
   if (arcbrk) {
     bordpop(i,delp2); la11=larc(i,1); la12=larc(i,2);
@@ -285,6 +289,7 @@ vertices. */
   short perconcat();
   REAL cellarea(), bordarea(), fsign(), linlen();
   boolean larc(), elost(), vincrement();
+  void foamplot();
   /*
    * Initialise:
    *
@@ -503,6 +508,7 @@ vertices. */
     }
     daconverge= (omaxdafrac==0.0) ? 0.0 : maxdafrac/omaxdafrac;
     icount++;
+    // foamplot(0);
   } while (((maxdafrac>areasup) || (bmaxdafrac>bareasup)) && !stuck);
   /*
    * ...finished AREA EQUILIBRATION.
