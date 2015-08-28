@@ -709,7 +709,7 @@ ADJUST1 : ;
    * Now recalculate the cell areas and calculate the network energy
    * by adding up the total perimeter length of the froth...
    */
-  maxdafrac=0.0; netenergy=0.0;
+  maxdafrac=0.0; netenergy=0.0; minenergy=0.0;
   for (i=0; i<onc; i++) found[i]=FALSE;
   for (ii=0; ii<nv; ii++) {
     i=vlist[ii];
@@ -723,6 +723,7 @@ ADJUST1 : ;
         netenergy += cl;
         da1=ca-carea[c1];
         carea[c1] += da1; darea[c1] -= da1;
+				minenergy += 2.0*sqrt(M_PI*carea[c1]);
         maxdafrac= (maxdafrac>(f=fabs(darea[c1]/carea[c1]))) ? maxdafrac : f;
       }
     }

@@ -605,6 +605,10 @@ void infowrite()
         if (fflag) fprintf(ff,"%f",f);
         if (wflag) printf("arootbar = %f\n",f);
       }
+      else if (strcmp(info_tok[i],"minenergy")==0) {
+        if (fflag) fprintf(ff,"%f",minenergy);
+        if (wflag) printf("minenergy = %f\n",minenergy);
+      }
       firsti=FALSE;
     }
   }

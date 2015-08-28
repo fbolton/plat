@@ -74,6 +74,7 @@ muarea		mu2 of area distribution
 arean		distribution of areas
 bside		distribution of sides of Plateau borders
 netenergy	energy of network
+minenergy	energy of equivalent disks of network
 henckyeps	present value of Hencky strain parameter
 elosscount	a count of how many edges have been lost in the present
 		run (not physically significant)

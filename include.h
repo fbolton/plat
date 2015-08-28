@@ -42,7 +42,7 @@ ratios to each other (as shown) and *must* be changed together. */
 
 #define MSTRING 256  /* Max length of a command string */
 
-#define MINFO 14  /* Update this whenever you add another type of
+#define MINFO 15  /* Update this whenever you add another type of
 information to the list in 'plat.c' */
 
 #define VORRAD 0.2  /* The radius used for the initial
@@ -257,7 +257,7 @@ extern short vlist[MVERT], clist[MCELL], blist[MBORD], bublist[MCELL],
 extern short nbsides[MBORD], ncsides[MCELL], iel[MELOST];
 extern short nv, nc, nb, nbub, onv, onc, onb, nel;
 extern int elosscount, bpinchcount;
-extern REAL tfoam, boxwid, boxhgt, netenergy, henckyeps, volfrac;
+extern REAL tfoam, boxwid, boxhgt, netenergy, henckyeps, volfrac, minenergy;
 extern REAL lengthdelta, pressuredelta, equilsup, filmwid, minvvlen,
             diffuserate, bprelax, areasup, bareasup, minbfrac, maxbfrac,
             maxdv, maxdvv, cosminang, bscale, cscale;

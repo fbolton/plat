@@ -25,7 +25,7 @@ short vlist[MVERT], clist[MCELL], blist[MBORD], bublist[MCELL], vnbr[MVERT][3],
 short nbsides[MBORD], ncsides[MCELL], iel[MELOST];
 short nv, nc, nb, nbub=0, onv, onc, onb, nel;
 int elosscount, bpinchcount;
-REAL tfoam=0.0, boxwid=1.0, boxhgt=1.0, netenergy, henckyeps, volfrac=0.0;
+REAL tfoam=0.0, boxwid=1.0, boxhgt=1.0, netenergy, henckyeps, volfrac=0.0, minenergy;
 REAL lengthdelta, pressuredelta, equilsup, filmwid, minvvlen,
       diffuserate, bprelax, areasup, bareasup, minbfrac, maxbfrac, maxdv,
       maxdvv, cosminang, bscale, cscale;
@@ -42,7 +42,7 @@ REAL svdamp= VDAMP, svvdamp= VVDAMP, spdamp= PDAMP, sbpdamp= BPDAMP,
 /* NB: Whenever this list is updated, MINFO must be changed in 'include.h' */
 char info_tok[][20]={"muside", "rhoside", "muarea", "arean", "bside",
      "netenergy", "henckyeps", "elosscount", "bpinchcount", "phi",
-     "nbar", "edgefrac", "z", "arootbar"};
+     "nbar", "edgefrac", "z", "arootbar", "minenergy"};
 boolean info_list[MINFO], info_wlist[MINFO], foamlike, ginteract=FALSE,
         notopol=FALSE;
 
