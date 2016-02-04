@@ -506,7 +506,7 @@ void infowrite()
   REAL mu, arean[21], f, nbar;
   boolean firsti, wflag, fflag;
   REAL muarea(), phifn(), nbarfn(), efracfn(), zfn(), arootfn();
-  void calcrho(), calcrhob(), calcarean();
+  void calcrho(), calcrhob(), calcarean(), cadjm();
   firsti=TRUE;
   for (i=0; i<MINFO; i++) {
     if (info_list[i]) {
@@ -609,6 +609,10 @@ void infowrite()
         if (fflag) fprintf(ff,"%f",minenergy);
         if (wflag) printf("minenergy = %f\n",minenergy);
       }
+			else if (strcmp(info_tok[i],"adjmat")==0) {
+				/*This is a slightly different one in that it writes to seperate files*/
+				cadjm();
+			}
       firsti=FALSE;
     }
   }

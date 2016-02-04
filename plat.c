@@ -42,7 +42,7 @@ REAL svdamp= VDAMP, svvdamp= VVDAMP, spdamp= PDAMP, sbpdamp= BPDAMP,
 /* NB: Whenever this list is updated, MINFO must be changed in 'include.h' */
 char info_tok[][20]={"muside", "rhoside", "muarea", "arean", "bside",
      "netenergy", "henckyeps", "elosscount", "bpinchcount", "phi",
-     "nbar", "edgefrac", "z", "arootbar", "minenergy"};
+     "nbar", "edgefrac", "z", "arootbar", "minenergy", "adjmat"};
 boolean info_list[MINFO], info_wlist[MINFO], foamlike, ginteract=FALSE,
         notopol=FALSE;
 

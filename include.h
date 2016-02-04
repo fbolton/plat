@@ -42,7 +42,7 @@ ratios to each other (as shown) and *must* be changed together. */
 
 #define MSTRING 256  /* Max length of a command string */
 
-#define MINFO 15  /* Update this whenever you add another type of
+#define MINFO 16  /* Update this whenever you add another type of
 information to the list in 'plat.c' */
 
 #define VORRAD 0.2  /* The radius used for the initial
@@ -145,11 +145,11 @@ per network relaxation */
 
 #define TOSCREEN 1 /* info to be send to 'stdout' */
 
-#define MSEGMENTS 100  /* gives the max. no. of points in a hatch-line */
+#define MSEGMENTS 1000  /* gives the max. no. of points in a hatch-line */
 
 #define SET_HATCHING 0
 
-#define HATCHSPACING 0.01  /* given as a fraction of box size */
+#define HATCHSPACING 0.001  /* given as a fraction of box size */
 
 /* Include these lines to use an IRIS (Silicon Graphics) terminal */
 #ifdef IRIS
