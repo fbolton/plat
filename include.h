@@ -250,7 +250,7 @@ extern char mgl_hpgl_filename[256], mgl_tek_filename[256], mgl_ps_filename[256];
 /* General variables */
 extern short knbr[3];
 extern REAL vx[MVERT], vy[MVERT], cp[MCELL], carea[MCELL], darea[MCELL],
-       dvx[MVERT], dvy[MVERT], dcp[MCELL];
+       dvx[MVERT], dvy[MVERT], dcp[MCELL], cxcent[MCELL], cycent[MCELL];
 extern REAL bpav, bp[MBORD], barea[MBORD];
 extern short vlist[MVERT], clist[MCELL], blist[MBORD], bublist[MCELL],
              vnbr[MVERT][3], vper[MVERT][3], cadj[MVERT][3];
