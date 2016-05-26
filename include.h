@@ -42,7 +42,7 @@ ratios to each other (as shown) and *must* be changed together. */
 
 #define MSTRING 256  /* Max length of a command string */
 
-#define MINFO 16  /* Update this whenever you add another type of
+#define MINFO 17  /* Update this whenever you add another type of
 information to the list in 'plat.c' */
 
 #define VORRAD 0.2  /* The radius used for the initial

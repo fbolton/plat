@@ -277,7 +277,7 @@ indicate how converged the network is.
    The convergence error used is the supremum of the increments to the
 vertices. */
   short i, i1, i2, k, j, j1, k1, c1, c2, b, ii, icount;
-  REAL x1,y1,x11,y11,x12,y12,x2,y2,x21,y21,x22,y22,p1,p2,da1,da2,dp1,dp2,sup;
+  REAL x1,y1,x11,y11,x12,y12,x2,y2,x21,y21,x22,y22,p1,p2,da1,da2,dp1,dp2,sup,xc,yc;
   REAL prate, vrate, vvrate, maxdcp, maxcp, dcp1, delp, delp2, dadp, maxdafrac,
        bmaxdafrac, daconverge, omaxdafrac=0.0, f, ca, cl;
   REAL a1, a2, a3, dx, dy, lim, d, d1;
@@ -716,9 +716,9 @@ ADJUST1 : ;
     for (k=1; k<3; k++) {
       if (!found[c1=cadj[i][k]]) {
         found[c1]=TRUE;
-        careaperim(i,k,TRUE,TRUE,&ca,&cl,&arcbrk);
+        careaperim(i,k,TRUE,TRUE,FALSE,&ca,&cl,&xc,&yc,&arcbrk);
         if (arcbrk) {
-          cellpop(i,k,delp2); careaperim(i,k,TRUE,TRUE,&ca,&cl,&arcbrk);
+          cellpop(i,k,delp2); careaperim(i,k,TRUE,TRUE,FALSE,&ca,&cl,&xc,&yc,&arcbrk);
         }
         netenergy += cl;
         da1=ca-carea[c1];

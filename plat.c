@@ -18,7 +18,7 @@ char mgl_hpgl_filename[256], mgl_tek_filename[256], mgl_ps_filename[256];
 /* General variables */
 short knbr[3] = {0, 2, 1};
 REAL vx[MVERT], vy[MVERT], cp[MCELL], carea[MCELL], darea[MCELL], dvx[MVERT],
-      dvy[MVERT], dcp[MCELL];
+      dvy[MVERT], dcp[MCELL], cxcent[MCELL], cycent[MCELL];
 REAL bpav=0.0, bp[MBORD], barea[MBORD];
 short vlist[MVERT], clist[MCELL], blist[MBORD], bublist[MCELL], vnbr[MVERT][3],
       vper[MVERT][3], cadj[MVERT][3];
@@ -42,7 +42,7 @@ REAL svdamp= VDAMP, svvdamp= VVDAMP, spdamp= PDAMP, sbpdamp= BPDAMP,
 /* NB: Whenever this list is updated, MINFO must be changed in 'include.h' */
 char info_tok[][20]={"muside", "rhoside", "muarea", "arean", "bside",
      "netenergy", "henckyeps", "elosscount", "bpinchcount", "phi",
-     "nbar", "edgefrac", "z", "arootbar", "minenergy", "adjmat"};
+     "nbar", "edgefrac", "z", "arootbar", "minenergy", "adjmat", "centroids"};
 boolean info_list[MINFO], info_wlist[MINFO], foamlike, ginteract=FALSE,
         notopol=FALSE;
 

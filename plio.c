@@ -506,7 +506,7 @@ void infowrite()
   REAL mu, arean[21], f, nbar;
   boolean firsti, wflag, fflag;
   REAL muarea(), phifn(), nbarfn(), efracfn(), zfn(), arootfn();
-  void calcrho(), calcrhob(), calcarean(), cadjm();
+  void calcrho(), calcrhob(), calcarean(), cadjm(), printcentroids();
   firsti=TRUE;
   for (i=0; i<MINFO; i++) {
     if (info_list[i]) {
@@ -612,6 +612,10 @@ void infowrite()
 			else if (strcmp(info_tok[i],"adjmat")==0) {
 				/*This is a slightly different one in that it writes to seperate files*/
 				cadjm();
+			}
+			else if (strcmp(info_tok[i],"centroids")==0) {
+				/*This is a slightly different one in that it writes to seperate files*/
+				printcentroids();
 			}
       firsti=FALSE;
     }
@@ -1030,5 +1034,42 @@ void cadjm()
   free(data);
   free(adjmat);
   fclose(matout);
+  callnumb++;
+}
+
+/*****************************************************************************
+ ***     * *    * *      * *                          * *    * *    * *    ***
+ ***    *   * *    *  *     *  CELLCENTROIDS ( )   *     * *    * *    *   ***
+ ***   *    *      *        *                   *        *      *      *   ***
+ *****************************************************************************
+ *
+ *	Subroutine:	cellcentroids()
+ *
+ *	Arguments:	 
+ *
+ *	Return value:	none
+ *
+ *	Action:		Traveses all cells and for each cell, 
+ *		calculates the centroid of the cell using the
+ *		centroids routene, which uses the careaperim() routine
+ *
+ *****************************************************************************/
+void printcentroids()
+{
+  void centroids();
+  FILE * centout; // file pointer to write matrix out
+  static int callnumb = 0; // counter to give each file a unique name
+  char filename[20]; // string for filename
+  sprintf(filename,"centroids%03d.dat",callnumb);
+  if( (centout = fopen(filename,"w")) == NULL){
+    plerror("error opening file for centroid output");
+    return;
+  }
+  int c;
+	centroids();
+  for(c=0;c<nc;c++){ // for each cell
+		fprintf(centout,"%lf\t%lf\n",cxcent[c],cycent[c]);
+  }
+	fclose(centout);
   callnumb++;
 }

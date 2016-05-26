@@ -1320,6 +1320,38 @@ REAL alpha, p1, p2;
 
 /*****************************************************************************
  ***     * *    * *      * *                          * *    * *    * *    ***
+ ***    *   * *    *  *     *A R C C E N T R O I D ( )   * *    * *    *   ***
+ ***   *    *      *        *                   *        *      *      *   ***
+ *****************************************************************************
+ *
+ *	Subroutine:	VOID arccentroid(REAL x1, y1, x2, y2, r, alpha, *xc, *yc)
+ *
+ *	Arguments:	(x1, y1),  (x2, y2) = endpoints of arc 
+ *			r = radius of curvature
+ *			alpha = opening angle of arc
+ *			(*xc, *yc) = centroid of segment
+ *
+ *	Return value:	none
+ *			computes the centroid of the circular segment defined by
+ *			arc endpoints (x1,y1), (x2, y2) and radius of curvature r, 
+ *			with opening angle alpha and stores the result in (*cx, *cy)
+ *
+ *****************************************************************************/
+void arccentroid(x1, y1, x2, y2, r, alpha, xc, yc)
+REAL x1, y1, x2, y2, r, alpha;
+REAL *xc, *yc;
+{
+	REAL linangle();
+	REAL theta = linangle(x1,y1,x2,y2) - M_PI_2;
+	REAL rcentroid = 2 * r * sin(alpha) * sin(alpha) * sin(alpha) / (3 * (2 * alpha - sin(2 * alpha))); 
+	arccentre(x1, y1, x2, y2, alpha, xc, yc);
+	*xc += rcentroid * cos(theta);
+	*yc += rcentroid * sin(theta);
+}
+
+
+/*****************************************************************************
+ ***     * *    * *      * *                          * *    * *    * *    ***
  ***    *   * *    *  *     *L I N A N G L E ( )   *     * *    * *    *   ***
  ***   *    *      *        *                   *        *      *      *   ***
  *****************************************************************************
@@ -1545,9 +1577,9 @@ REAL cellarea(i,k,arcbrk)
 short i, k;
 boolean *arcbrk;
 {
-  REAL ca, cl;
+  REAL ca, cl, xc, yc;
   void careaperim();
-  careaperim(i,k,TRUE,FALSE,&ca,&cl,arcbrk);
+  careaperim(i,k,TRUE,FALSE,FALSE,&ca,&cl,&xc,&yc,arcbrk);
   return ca;
 }
 
@@ -1579,9 +1611,9 @@ REAL cellperim(i,k,arcbrk)
 short i, k;
 boolean *arcbrk;
 {
-  REAL ca, cl;
+  REAL ca, cl, xc, yc;
   void careaperim();
-  careaperim(i,k,FALSE,TRUE,&ca,&cl,arcbrk);
+  careaperim(i,k,FALSE,TRUE,FALSE,&ca,&cl,&xc,&yc,arcbrk);
   return cl;
 }
 
@@ -1591,8 +1623,8 @@ boolean *arcbrk;
  ***   *    *      *        *                   *        *      *      *   ***
  *****************************************************************************
  *
- *	Subroutine:	careaperim(short i, k, boolean caflg, clflg,
- *				REAL *ca, *cl, boolean *arcbrk)
+ *	Subroutine:	careaperim(short i, k, boolean caflg, clflg, ccflg,
+ *				REAL *ca, *cl, *ccx, *ccy, boolean *arcbrk)
  *
  *	Arguments:	i	= index of vertex lying on perimeter of cell
  *			k	= select k'th cell adjacent to vertex `i'
@@ -1615,17 +1647,17 @@ boolean *arcbrk;
  *			significance of argument `*arcbrk'.
  *
  *****************************************************************************/
-void careaperim(i, k, caflg, clflg, ca, cl, arcbrk)
-REAL *ca, *cl;
+void careaperim(i, k, caflg, clflg, ccflg, ca, cl, ccx, ccy, arcbrk)
+REAL *ca, *cl, *ccx, *ccy;
 short i, k;
-boolean caflg, clflg, *arcbrk;
+boolean caflg, clflg, ccflg, *arcbrk;
 {
   short i1, ii, ii1, j, j1, c, perconcat();
-  REAL tx, ty, p1, p2, x1, y1, x2, y2, x3, y3, alpha, pb,
+  REAL tx, ty, p1, p2, x1, y1, x2, y2, x3, y3, xc, yc, alpha, pb, triangarea, arcarea,
     barcangle(), carcangle(), barclen(), barcarea(), carcarea(), triarea(),
     fsign();
   boolean la, larc();
-  void trans();
+  void trans(), arccentroid();
   *arcbrk=FALSE;
   if (k==2) { i=vnbr[i][0]; k=1; }
   c=cadj[i][k];
@@ -1637,27 +1669,53 @@ boolean caflg, clflg, *arcbrk;
     x3=vx[j]+tx*boxwid; y3=vy[j]+ty*boxhgt;
     la=larc(i,2); pb=bp[cadj[i][0]];
     alpha=barcangle(x3,y3,x2,y2,p1,pb,la,arcbrk);
+		arcarea = barcarea(alpha,p1,pb);
+		if (i!=ii) triangarea = triarea(x1,y1,x2,y2,x3,y3);
     if (*arcbrk) break;
-    if (caflg) *ca += barcarea(alpha,p1,pb);
+    if (caflg || ccflg) *ca += arcarea;
     if (clflg) *cl += barclen(x3,y3,x2,y2,p1,pb,la,arcbrk);
+		if (ccflg){ 
+			arccentroid(x3,y3,x2,y2,BRADIUS(p1,pb),alpha,&xc,&yc);
+			*ccx += xc * arcarea;
+			*ccy += yc * arcarea;
+		}
     if (*arcbrk) break;
-    if ((i!=ii) && caflg) *ca += triarea(x1,y1,x2,y2,x3,y3);
+    if ((i!=ii) && (caflg || ccflg)) *ca += triangarea;
+    if ((i!=ii) && ccflg){
+		 	*ccx += triangarea * (x1 + x2 + x3)/3.;
+		 	*ccy += triangarea * (y1 + y2 + y3)/3.;
+		}
     i=j; i1=j1;
     tx += PERX(vper[j][0]); ty += PERY(vper[j][0]);
     j=vnbr[j][0];
     x2=x3; y2=y3;
     x3=vx[j]+tx*boxwid; y3=vy[j]+ty*boxhgt;
-    if ((j!=ii) && caflg) *ca += triarea(x1,y1,x2,y2,x3,y3);
+		if (i!=ii) triangarea = triarea(x1,y1,x2,y2,x3,y3);
+    if ((j!=ii) && (caflg || ccflg)) *ca += triangarea;
+    if ((i!=ii) && ccflg){
+		 	*ccx += triangarea * (x1 + x2 + x3)/3.;
+		 	*ccy += triangarea * (y1 + y2 + y3)/3.;
+		}
     p2=cp[cadj[i][1]];
     alpha=carcangle(x3,y3,x2,y2,p1,p2);
-    if (caflg) *ca += carcarea(alpha,p1,p2);
+		arcarea = carcarea(alpha,p1,p2);
+    if (caflg || ccflg) *ca += arcarea;
     if (clflg) *cl += carclen(x3,y3,x2,y2,p1,p2);
+		if (ccflg){ 
+			arccentroid(x3,y3,x2,y2,CRADIUS(p1,p2),alpha,&xc,&yc);
+			*ccx += xc * arcarea;
+			*ccy += yc * arcarea;
+		}
     if (j==ii) break;
     i=j; i1=j1;
     tx += PERX(vper[j][2]); ty += PERY(vper[j][2]);
     j=vnbr[j][2];
     x2=x3; y2=y3;
   } while (TRUE);
+	if (ccflg){
+		*ccx /= *ca;
+		*ccy /= *ca;
+	}
 }
 
 /*****************************************************************************
@@ -2000,6 +2058,37 @@ short b;
   } while (i!=ii);
   return nbs;
 }
+
+/*****************************************************************************
+ ***     * *    * *      * *                          * *    * *    * *    ***
+ ***    *   * *    *  *     * C E N T R O I D S ( ) *    * *    * *    *   ***
+ ***   *    *      *        *                   *        *      *      *   ***
+ *****************************************************************************
+ *
+ *	Subroutine:	void centroids()
+ *
+ *	Arguments:	
+ *
+ *	Return value:	
+ * 
+ *  This function fills in the cxcent and cycent arrays with centroid coords
+ *
+ *****************************************************************************/
+void centroids()
+{
+  int i, ii, k, c;
+	REAL ca, cl;
+	boolean arcbrk;
+	for(c=0;c<nc;c++){
+		for (ii=0; ii<nv; ii++) {
+			i=vlist[ii];
+			if (c==cadj[i][k=1]) break;
+			if (c==cadj[i][k=2]) break;
+		}
+		careaperim(i,k,FALSE,FALSE,TRUE,&ca,&cl,&(cxcent[c]),&(cycent[c]),&arcbrk);
+	}
+}
+
 
 /*****************************************************************************
  ***     * *    * *      * *                          * *    * *    * *    ***
