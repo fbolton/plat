@@ -1342,9 +1342,13 @@ REAL x1, y1, x2, y2, r, alpha;
 REAL *xc, *yc;
 {
 	REAL linangle();
-	REAL theta = linangle(x1,y1,x2,y2) - M_PI_2;
-	REAL rcentroid = 2 * r * sin(alpha) * sin(alpha) * sin(alpha) / (3 * (2 * alpha - sin(2 * alpha))); 
+	REAL theta = twopimod(linangle(x1,y1,x2,y2) + M_PI_2);
 	arccentre(x1, y1, x2, y2, alpha, xc, yc);
+	REAL openingAngle = fabs(alpha) * 0.5;
+	REAL rcentroid = 4 * r * sin(openingAngle) * sin(openingAngle) * sin(openingAngle) / (3 * (2 * openingAngle - sin(2 * openingAngle))); 
+	if( alpha < 0){
+		theta = twopimod(theta + M_PI);
+	}
 	*xc += rcentroid * cos(theta);
 	*yc += rcentroid * sin(theta);
 }
@@ -1670,7 +1674,9 @@ boolean caflg, clflg, ccflg, *arcbrk;
     la=larc(i,2); pb=bp[cadj[i][0]];
     alpha=barcangle(x3,y3,x2,y2,p1,pb,la,arcbrk);
 		arcarea = barcarea(alpha,p1,pb);
-		if (i!=ii) triangarea = triarea(x1,y1,x2,y2,x3,y3);
+		if (i!=ii) {
+			triangarea = triarea(x1,y1,x2,y2,x3,y3);
+		}
     if (*arcbrk) break;
     if (caflg || ccflg) *ca += arcarea;
     if (clflg) *cl += barclen(x3,y3,x2,y2,p1,pb,la,arcbrk);
@@ -1690,7 +1696,9 @@ boolean caflg, clflg, ccflg, *arcbrk;
     j=vnbr[j][0];
     x2=x3; y2=y3;
     x3=vx[j]+tx*boxwid; y3=vy[j]+ty*boxhgt;
-		if (i!=ii) triangarea = triarea(x1,y1,x2,y2,x3,y3);
+		if (i!=ii) {
+			triangarea = triarea(x1,y1,x2,y2,x3,y3);
+		}
     if ((j!=ii) && (caflg || ccflg)) *ca += triangarea;
     if ((i!=ii) && ccflg){
 		 	*ccx += triangarea * (x1 + x2 + x3)/3.;
@@ -1714,7 +1722,11 @@ boolean caflg, clflg, ccflg, *arcbrk;
   } while (TRUE);
 	if (ccflg){
 		*ccx /= *ca;
+		while(*ccx >= 0.5){ *ccx -= 1.; }
+		while(*ccx < -0.5){ *ccx += 1.; }
 		*ccy /= *ca;
+		while(*ccy >= 0.5){ *ccy -= 1.; }
+		while(*ccy < -0.5){ *ccy += 1.; }
 	}
 }
 
@@ -2085,6 +2097,8 @@ void centroids()
 			if (c==cadj[i][k=1]) break;
 			if (c==cadj[i][k=2]) break;
 		}
+		cxcent[c] = 0.;
+		cycent[c] = 0.;
 		careaperim(i,k,FALSE,FALSE,TRUE,&ca,&cl,&(cxcent[c]),&(cycent[c]),&arcbrk);
 	}
 }
