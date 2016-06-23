@@ -4,3 +4,5 @@ xplat
 info.pb
 .cproject
 .project
+.ycm_extra_conf.*
+callgrind.out*
