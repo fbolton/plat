@@ -337,6 +337,116 @@ void mglinit()
 
 /*****************************************************************************
  ***     * *    * *      * *                          * *    * *    * *    ***
+ ***    *   * *    *  *     *  M G L P O I N T ( ) *     * *    * *    *   ***
+ ***   *    *      *        *                   *        *      *      *   ***
+ *****************************************************************************
+ *
+ *	Subroutine:	mglpoint(REAL x1, REAL y1)
+ *
+ *	Arguments:	(x1, y1) = Coordinate of point
+ *
+ *	Return value:	none
+ *
+ *	Action:		Plots a point (on all of the current graphics devices.)(remains to be seen)
+ *			For plotting parameters see file `include.h'.
+ *
+ *****************************************************************************/
+void mglpoint(x1,y1)
+REAL x1,y1;
+{
+/*
+ * Commented out everything copied from mglline 
+ * that is not postscript or xwindows
+ *
+ * #ifdef IRIS
+  REAL xy[2];
+#endif
+#ifdef TEK
+  short ix1, iy1, ix2, iy2;
+  char b1, b2, b3, b4;
+#endif
+#if defined(HPGL) || defined(ORIHPGL)
+  short i;
+  REAL dx, dy;
+#endif
+#ifdef IRIS
+  if (ginteract) {
+    bgnline();
+    xy[0]=irxo+irxs*x1; xy[1]=iryo+irys*y1;
+#ifdef DOUBLEPRECISION
+    v2d(xy);
+#else
+    v2f(xy);
+#endif
+    xy[0]=irxo+irxs*x2; xy[1]=iryo+irys*y2;
+#ifdef DOUBLEPRECISION
+    v2d(xy);
+#else
+    v2f(xy);
+#endif
+    endline();
+  }
+#endif
+#if defined(HPGL)
+  if (mgl_hpgl_flag) {
+[>
+    x1=hpglxo+hpglxs*x1; y1=hpglyo+hpglys*y1;
+    x2=hpglxo+hpglxs*x2; y2=hpglyo+hpglys*y2;
+    fprintf(hpgl,"PU%.0f,%.0f;",x1,y1);
+    dx=(x2-x1)/20.0; dy=(y2-y1)/20.0;
+    for (i=1; i<=20; i++) {
+      fprintf(hpgl,"PD%.0f,%.0f;",x1+i*dx,y1+i*dy);
+    }
+<]
+    fprintf(hpgl,"PU%.0f,%.0f;PD%.0f,%.0f;\n",x1,y1,x2,y2);
+  }
+#endif
+#ifdef TEK
+  [>
+   *  Lots of Black Art here -- I admit it's incomprehensible,
+   *  and I don't know what it does myself any more!
+   <]
+  if (mgl_tek_flag) {
+    ix1= (short) (tekxo+tekxs*x1); iy1= (short) (tekyo+tekys*y1);
+    ix2= (short) (tekxo+tekxs*x2); iy2= (short) (tekyo+tekys*y2);
+    if (ix1>=0 && ix1<1024 && iy1>=0 && iy1<1024
+     && ix2>=0 && ix2<1024 && iy2>=0 && iy2<1024) {
+      b1=((char) ((iy1&0x3e0)>>5)|0x20);
+      b2=((char) (iy1&0x1f)|0x60);
+      b3=((char) ((ix1&0x3e0)>>5)|0x20);
+      b4=((char) (ix1&0x1f)|0x40);
+      fprintf(tek,"%c%c%c%c%c",0x1d,b1,b2,b3,b4);
+      b1=((char) ((iy2&0x3e0)>>5)|0x20);
+      b2=((char) (iy2&0x1f)|0x60);
+      b3=((char) ((ix2&0x3e0)>>5)|0x20);
+      b4=((char) (ix2&0x1f)|0x40);
+      [>
+       *  The following is a bizarre kludge which proved to
+       *  be necessary when this code was first developed.
+       *  A whole brace of `no-ops' are sent to the Tektronix
+       *  display to give the terminal some time to think!
+       <]
+      fprintf(tek,"%c%c%c%c%c%c%c%c%c%c%c%c",
+        b1,b2,b3,b4,0x16,0x16,0x16,0x16,0x16,0x16,0x16,0x16);
+      if ((tekcount += 17)>490) { fprintf(tek,"%c",0x0a); tekcount=0; }
+    }
+  }
+#endif*/
+#ifdef POSTSCRIPT
+  if (mgl_ps_flag) {
+    fprintf(post,"%.1f %.1f 5 0 360 newpath arc\nfill\n",postxo+postxs*x1,postyo+postys*y1);
+    /*fprintf(post,"%.1f %.1f l\n",postxo+postxs*x2,postyo+postys*y2);*/
+  }
+#endif
+#ifdef X_WINDOWS
+  XDrawPoint(XtDisplay(wtop),bitmap.froth_bitmap,bitmap.draw_gc,
+	    INTOF(x_win_xo+x_win_xs*x1), INTOF(x_win_yo+x_win_ys*y1) );
+#endif  
+}
+
+
+/*****************************************************************************
+ ***     * *    * *      * *                          * *    * *    * *    ***
  ***    *   * *    *  *     *    M G L L I N E ( ) *     * *    * *    *   ***
  ***   *    *      *        *                   *        *      *      *   ***
  *****************************************************************************
@@ -679,7 +789,7 @@ void mglclose()
  *	Subroutine:	mglfoam(REAL xorigin, REAL yorigin, REAL scale,
  *			        boolean leftfil, botfil,
  *			        REAL theta,
- *			        boolean hatch)
+ *			        boolean hatch, centroid)
  *
  *	Arguments:	(xorigin, yorigin) = The centre of the foam plot
  *				relative to the display origin.  These are
@@ -699,6 +809,8 @@ void mglclose()
  *				Plateau borders (ignored if `hatch == FALSE')
  *			hatch	= Flag to indicate whether hatching of the
  *				Plateau borders is desired.
+ *			centroid	= Flag to indicate whether drawing of centroids
+ *				of bubbles is desired.
  *
  *	Return value:	none
  *
@@ -735,9 +847,9 @@ void mglclose()
  *			the argument `theta'.
  *
  *****************************************************************************/
-void mglfoam(xorigin,yorigin,scale,leftfil,botfil,theta,hatch)
+void mglfoam(xorigin,yorigin,scale,leftfil,botfil,theta,hatch,centroid)
 REAL xorigin, yorigin, scale, theta;
-boolean leftfil, botfil, hatch;
+boolean leftfil, botfil, hatch, centroid;
 {
   short i, ii, k, j, j1, c1, c2, b;
   REAL x1, y1, x2, y2, p1, p2, alpha, xc, yc, r, th, th1, temp;
@@ -842,6 +954,11 @@ SKIPBARC: ;
         mglhatch(i,theta,xorigin,yorigin,scale);
       }
     }
+  }  
+	if (centroid) {
+		for(i=0;i<nc;i++){
+			mglpoint(cxcent[i],cycent[i]);
+		}
   }
 }
 
