@@ -181,7 +181,7 @@ boolean plotflag;
 #ifdef IRIS
           zoom();
 #endif
-          foamplot(0);
+          foamplot(0,0);
         }
         j++;
       }
@@ -239,7 +239,7 @@ boolean plotflag;
 #ifdef IRIS
           zoom();
 #endif
-          foamplot(0);
+          foamplot(0,0);
         }
         j++;
       }

@@ -21,8 +21,8 @@
  *
  *****************************************************************************/
 void vfoamout(s)
-char *s;
-/* The preferred name is "vfoam.pb" */
+  char *s;
+  /* The preferred name is "vfoam.pb" */
 {
   FILE *fp;
   short i, j;
@@ -60,8 +60,8 @@ char *s;
  *
  *****************************************************************************/
 void vfoamin(s)
-char *s;
-/* The preferred name is "vfoam.pb" */
+  char *s;
+  /* The preferred name is "vfoam.pb" */
 {
   FILE *fp;
   short i, j;
@@ -97,7 +97,7 @@ char *s;
  *
  *****************************************************************************/
 void foamout(char *s)
-/* The preferred name is "foam.pb" */
+  /* The preferred name is "foam.pb" */
 {
   short i, ii, j;
   FILE *fp;
@@ -156,7 +156,7 @@ void foamout(char *s)
  *
  *****************************************************************************/
 void foamin(char *s)
-/* The preferred name is "foam.pb" */
+  /* The preferred name is "foam.pb" */
 {
   FILE *fp;
   short i, ii, j;
@@ -314,11 +314,11 @@ void vfoamplot()
  *			wrapper for the substantial routine `mglfoam()'.
  *
  *****************************************************************************/
-void foamplot(boolean hatchflag)
+void foamplot(boolean hatchflag, boolean centroidflag)
 {
   void mglinit(), mglfoam(), mglrect(), mglclose();
   mglinit();
-  mglfoam(0.0,0.0,0.0,TRUE,TRUE,30.0,hatchflag);
+  mglfoam(0.0,0.0,0.0,TRUE,TRUE,30.0,hatchflag,centroidflag);
   mglrect(-0.5*boxwid,-0.5*boxhgt,0.5*boxwid,0.5*boxhgt);
   mglclose();
 }
@@ -329,10 +329,11 @@ void foamplot(boolean hatchflag)
  ***   *    *      *        *                   *        *      *      *   ***
  *****************************************************************************
  *
- *	Subroutine:	polyplot(short mult, boolean hatchflag)
+ *	Subroutine:	polyplot(short mult, boolean hatchflag, centroidflag)
  *
  *	Arguments:	mult	= how many multiples of periodic box
  *			hatchflag = TRUE to switch on hatching of borders
+ *			centroidflag = TRUE to switch on plotting of centroid points
  *
  *	Return value:	none
  *
@@ -341,7 +342,7 @@ void foamplot(boolean hatchflag)
  *			periodic boxes plotted to the current graphics devices.
  *
  *****************************************************************************/
-void polyplot(short mult, boolean hatchflag)
+void polyplot(short mult, boolean hatchflag, boolean centroidflag)
 {
   void mglinit(), mglfoam(), mglrect(), mglclose();
   REAL s, x, y, del, lowedge;
@@ -351,7 +352,7 @@ void polyplot(short mult, boolean hatchflag)
   mglinit();
   for (x=lowedge; x<0.5; x += del)
     for (y=lowedge; y<0.5; y += del)
-      mglfoam(x,y,s,(x==lowedge),(y==lowedge),30.0,hatchflag);
+      mglfoam(x,y,s,(x==lowedge),(y==lowedge),30.0,hatchflag,centroidflag);
   mglrect(-0.5*boxwid,-0.5*boxhgt,0.5*boxwid,0.5*boxhgt);
   mglclose();
 }
@@ -375,7 +376,7 @@ void polyplot(short mult, boolean hatchflag)
  *
  *****************************************************************************/
 void clusterplot(i)
-short i;
+  short i;
 {
   void vnbrxy(), mglinit(), mglline(), mglbord(), mglrect(), mglclose();
   REAL x1, y1, x2, y2;
@@ -609,14 +610,14 @@ void infowrite()
         if (fflag) fprintf(ff,"%f",minenergy);
         if (wflag) printf("minenergy = %f\n",minenergy);
       }
-			else if (strcmp(info_tok[i],"adjmat")==0) {
-				/*This is a slightly different one in that it writes to seperate files*/
-				cadjm();
-			}
-			else if (strcmp(info_tok[i],"centroids")==0) {
-				/*This is a slightly different one in that it writes to seperate files*/
-				printcentroids();
-			}
+      else if (strcmp(info_tok[i],"adjmat")==0) {
+        /*This is a slightly different one in that it writes to seperate files*/
+        cadjm();
+      }
+      else if (strcmp(info_tok[i],"centroids")==0) {
+        /*This is a slightly different one in that it writes to seperate files*/
+        printcentroids();
+      }
       firsti=FALSE;
     }
   }
@@ -644,7 +645,7 @@ void infowrite()
  *
  *****************************************************************************/
 void calcrho(rho)
-short rho[];
+  short rho[];
 {
   short j, jj;
   for (j=0; j<21; j++) rho[j]=0;
@@ -677,7 +678,7 @@ short rho[];
  *
  *****************************************************************************/
 REAL nbarfn(rho)
-short rho[];
+  short rho[];
 {
   short j;
   REAL nbar;
@@ -710,7 +711,7 @@ short rho[];
  *
  *****************************************************************************/
 REAL zfn(rho)
-short rho[];
+  short rho[];
 {
   /* This fn returns the average number of sides to a cell (co-ordination) */
   /* *not* including zero or one sided cells */
@@ -769,7 +770,7 @@ REAL muarea()
  *
  *****************************************************************************/
 void calcarean(arean)
-REAL arean[21];
+  REAL arean[21];
 {
   short i, ii, rho[21];
   REAL abar;
@@ -806,7 +807,7 @@ REAL arean[21];
  *
  *****************************************************************************/
 void calcrhob(rho)
-short rho[];
+  short rho[];
 {
   short j, jj, ns;
   for (j=0; j<=20; j++) rho[j]=0;
@@ -892,7 +893,7 @@ REAL arootfn()
   ra /= (REAL) nc;
   return(ra);
 }
- 
+
 /*****************************************************************************
  ***     * *    * *      * *                          * *    * *    * *    ***
  ***    *   * *    *  *     I N F O C L O S E ( )  *     * *    * *    *   ***
@@ -941,8 +942,8 @@ void infoclose()
  *
  *****************************************************************************/
 void setinfo(tok,wflag,fflag)
-char *tok;
-boolean wflag, fflag;
+  char *tok;
+  boolean wflag, fflag;
 {
   void plerror();
   short i, j;
@@ -1066,10 +1067,10 @@ void printcentroids()
     return;
   }
   int c;
-	centroids();
+  centroids();
   for(c=0;c<nc;c++){ // for each cell
-		fprintf(centout,"%lf\t%lf\n",cxcent[c],cycent[c]);
+    fprintf(centout,"%lf\t%lf\t%lf\n",cxcent[c],cycent[c],sqrt(carea[c] * M_1_PI));
   }
-	fclose(centout);
+  fclose(centout);
   callnumb++;
 }

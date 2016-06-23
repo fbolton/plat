@@ -508,7 +508,7 @@ vertices. */
     }
     daconverge= (omaxdafrac==0.0) ? 0.0 : maxdafrac/omaxdafrac;
     icount++;
-    // foamplot(0);
+    // foamplot(0,0);
   } while (((maxdafrac>areasup) || (bmaxdafrac>bareasup)) && !stuck);
   /*
    * ...finished AREA EQUILIBRATION.

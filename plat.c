@@ -3,7 +3,7 @@
 #include <ctype.h>
 
 /* Any changes made to these Global Variables must be reflected in the file
-'include.h' to avoid a general state of chaos. */
+   'include.h' to avoid a general state of chaos. */
 
 /* Voronoi variables */
 boolean waspivot[MCELL];
@@ -18,7 +18,7 @@ char mgl_hpgl_filename[256], mgl_tek_filename[256], mgl_ps_filename[256];
 /* General variables */
 short knbr[3] = {0, 2, 1};
 REAL vx[MVERT], vy[MVERT], cp[MCELL], carea[MCELL], darea[MCELL], dvx[MVERT],
-      dvy[MVERT], dcp[MCELL], cxcent[MCELL], cycent[MCELL];
+     dvy[MVERT], dcp[MCELL], cxcent[MCELL], cycent[MCELL];
 REAL bpav=0.0, bp[MBORD], barea[MBORD];
 short vlist[MVERT], clist[MCELL], blist[MBORD], bublist[MCELL], vnbr[MVERT][3],
       vper[MVERT][3], cadj[MVERT][3];
@@ -27,22 +27,22 @@ short nv, nc, nb, nbub=0, onv, onc, onb, nel;
 int elosscount, bpinchcount;
 REAL tfoam=0.0, boxwid=1.0, boxhgt=1.0, netenergy, henckyeps, volfrac=0.0, minenergy;
 REAL lengthdelta, pressuredelta, equilsup, filmwid, minvvlen,
-      diffuserate, bprelax, areasup, bareasup, minbfrac, maxbfrac, maxdv,
-      maxdvv, cosminang, bscale, cscale;
+     diffuserate, bprelax, areasup, bareasup, minbfrac, maxbfrac, maxdv,
+     maxdvv, cosminang, bscale, cscale;
 REAL svdamp= VDAMP, svvdamp= VVDAMP, spdamp= PDAMP, sbpdamp= BPDAMP,
-      sbprelax= BPRELAX, sminbfrac= MINBFRAC, smaxbfrac= MAXBFRAC,
-      slengthdelta= DFLTLENGTHDELTA, spressuredelta= DFLTPRESSUREDELTA,
-      sdiffuserate= DFLTDIFFUSERATE, sareasup= DFLTAREASUP,
-      sbareasup= DFLTBAREASUP, smaxdv= DFLTMAXDV, smaxdvv= DFLTMAXDVV,
-      sequilsup= DFLTEQUILSUP, sminvvlen= DFLTMINVVLEN,
-      sfilmwid= DFLTFILMWID, scosminang= COSMINANG, srfrac= HARDRFRAC,
-      snotopol= 0.0, sminareasup= MINAREASUP, smaxiter= MAXITER,
-      svorseed= (REAL) VORSEED;
+     sbprelax= BPRELAX, sminbfrac= MINBFRAC, smaxbfrac= MAXBFRAC,
+     slengthdelta= DFLTLENGTHDELTA, spressuredelta= DFLTPRESSUREDELTA,
+     sdiffuserate= DFLTDIFFUSERATE, sareasup= DFLTAREASUP,
+     sbareasup= DFLTBAREASUP, smaxdv= DFLTMAXDV, smaxdvv= DFLTMAXDVV,
+     sequilsup= DFLTEQUILSUP, sminvvlen= DFLTMINVVLEN,
+     sfilmwid= DFLTFILMWID, scosminang= COSMINANG, srfrac= HARDRFRAC,
+     snotopol= 0.0, sminareasup= MINAREASUP, smaxiter= MAXITER,
+     svorseed= (REAL) VORSEED;
 /*                      * Infolist */
 /* NB: Whenever this list is updated, MINFO must be changed in 'include.h' */
 char info_tok[][20]={"muside", "rhoside", "muarea", "arean", "bside",
-     "netenergy", "henckyeps", "elosscount", "bpinchcount", "phi",
-     "nbar", "edgefrac", "z", "arootbar", "minenergy", "adjmat", "centroids"};
+  "netenergy", "henckyeps", "elosscount", "bpinchcount", "phi",
+  "nbar", "edgefrac", "z", "arootbar", "minenergy", "adjmat", "centroids"};
 boolean info_list[MINFO], info_wlist[MINFO], foamlike, ginteract=FALSE,
         notopol=FALSE;
 
@@ -100,20 +100,20 @@ main()
         nestlevel=0;
         for (i=0; i<slen; i++) {
           switch(s[i]) {
-          case '{' : nestlevel++; break;
-          case '}' : nestlevel--;
-                     if (nestlevel<0) {
-                       plerror("too many right brackets");
-                       sgood=FALSE; i=slen;
-                     }
-                     break;
-          case '\\' :
-            s[i]=' ';
-            if (i!=slen) {
-              plerror("illegal embedded backslash character \'\\\'");
-              sgood=FALSE; i=slen;
-            }
-            break;
+            case '{' : nestlevel++; break;
+            case '}' : nestlevel--;
+                       if (nestlevel<0) {
+                         plerror("too many right brackets");
+                         sgood=FALSE; i=slen;
+                       }
+                       break;
+            case '\\' :
+                       s[i]=' ';
+                       if (i!=slen) {
+                         plerror("illegal embedded backslash character \'\\\'");
+                         sgood=FALSE; i=slen;
+                       }
+                       break;
           }
         }
       }
@@ -155,8 +155,8 @@ main()
  *
  *****************************************************************************/
 boolean sprompt(s, nestlevel)
-char *s;
-short nestlevel;
+  char *s;
+  short nestlevel;
 {
   short i, len;
   void plerror();
@@ -208,8 +208,8 @@ short nestlevel;
  *
  *****************************************************************************/
 void s_execute(s, nestlevel)
-char *s;
-short nestlevel;
+  char *s;
+  short nestlevel;
 {
   void plerror(), setconstants(), trans(), vorspray();
   void mglinit(), mglline(), mglclose(), mglreset();
@@ -226,7 +226,7 @@ short nestlevel;
   int n1, n2;
   char c, tok[MSTRING];
   static char fname[50]="foam.pb";
-  boolean sgood, flag, fflag;
+  boolean sgood, flag, fflag, hatchflag, centroidflag;
   static REAL eps=0.01;
   static boolean infoflag=FALSE;
   float f;
@@ -247,246 +247,252 @@ short nestlevel;
       else {
         /* Execute simple commands */
         switch (c) {
-        case 'p' : foamplot(0); break;
-        case 'P' :
-	  n1 = 1;
-	  flag= FALSE;
-	  mgl_hpgl_flag = mgl_tek_flag = mgl_ps_flag = FALSE;
-          while (isspace(s[i+1]) && i<len) i++;
-	  while (s[i+1]=='-' && i<len) {
-	    i++;
-	    if (strncmp(s+i+1,"n",1)==0) {
-	      /* Do a multiple box plot... */
-	      i++;
-              while (isspace(s[i+1]) && i<len) i++;
-	      if (!isdigit(s[i+1]) || s[i+1]=='-' ) {
-		plerror("error: option -n must be followed by a positive integer");
-		return;
-	      }
-              sscanf(s+i+1,"%d",&n1);
-	    }
-	    else if (strncmp(s+i+1,"hpgl",4)==0) {
-	      i += 4;
-              while (isspace(s[i+1]) && i<len) i++;
-	      for (j=0; !isspace(s[i+1]) && i<len; i++, j++) {
-		mgl_hpgl_filename[j] = s[i+1];
-	      }
-	      mgl_hpgl_filename[j] = '\0';
-	      mgl_hpgl_flag = TRUE;
-	      printf("writing file %s ...\n",mgl_hpgl_filename);
-	    }
-	    else if (strncmp(s+i+1,"tek",3)==0) {
-	      i += 3;
-              while (isspace(s[i+1]) && i<len) i++;
-	      for (j=0; !isspace(s[i+1]) && i<len; i++, j++) {
-		mgl_tek_filename[j] = s[i+1];
-	      }
-	      mgl_tek_filename[j] = '\0';
-	      mgl_tek_flag = TRUE;
-	      printf("writing file %s ...\n",mgl_tek_filename);
-	    }
-	    else if (strncmp(s+i+1,"ps",2)==0) {
-	      i += 2;
-              while (isspace(s[i+1]) && i<len) i++;
-	      for (j=0; !isspace(s[i+1]) && i<len; i++, j++) {
-		mgl_ps_filename[j] = s[i+1];
-	      }
-	      mgl_ps_filename[j] = '\0';
-	      mgl_ps_flag = TRUE;
-	      printf("writing file %s ...\n",mgl_ps_filename);
-	    }
-	    else if (strncmp(s+i+1,"hatch",5)==0) {
-	      i += 5;
-	      flag= TRUE;
-	    }
-            while (!isalpha(s[i+1]) && s[i+1]!='-' && i<len) i++;
-	  }
-	  /* oldstuff */
-          polyplot((short) n1,flag); break;
-	  /* Reset flags again */
-	  mgl_hpgl_flag = mgl_tek_flag = mgl_ps_flag = FALSE;
-        case 'a' : equil(1); break;
-        case 'e' : j=0;
-                   do { j++;
-                   } while (equil(0)>equilsup && ((REAL) j)<smaxiter);
-                   printf("network energy = %f\n",netenergy);
-                   printf("%d iterations taken...\n",j);
-                   break;
-        case 'E' : j=0;
-                   do {
+          case 'p' : foamplot(0,0); break;
+          case 'P' :
+                     n1 = 1;
+                     flag= FALSE; hatchflag = FALSE; centroidflag = FALSE;
+                     mgl_hpgl_flag = mgl_tek_flag = mgl_ps_flag = FALSE;
+                     while (isspace(s[i+1]) && i<len) i++;
+                     while (s[i+1]=='-' && i<len) {
+                       i++;
+                       if (strncmp(s+i+1,"n",1)==0) {
+                         /* Do a multiple box plot... */
+                         i++;
+                         while (isspace(s[i+1]) && i<len) i++;
+                         if (!isdigit(s[i+1]) || s[i+1]=='-' ) {
+                           plerror("error: option -n must be followed by a positive integer");
+                           return;
+                         }
+                         sscanf(s+i+1,"%d",&n1);
+                       }
+                       else if (strncmp(s+i+1,"hpgl",4)==0) {
+                         i += 4;
+                         while (isspace(s[i+1]) && i<len) i++;
+                         for (j=0; !isspace(s[i+1]) && i<len; i++, j++) {
+                           mgl_hpgl_filename[j] = s[i+1];
+                         }
+                         mgl_hpgl_filename[j] = '\0';
+                         mgl_hpgl_flag = TRUE;
+                         printf("writing file %s ...\n",mgl_hpgl_filename);
+                       }
+                       else if (strncmp(s+i+1,"tek",3)==0) {
+                         i += 3;
+                         while (isspace(s[i+1]) && i<len) i++;
+                         for (j=0; !isspace(s[i+1]) && i<len; i++, j++) {
+                           mgl_tek_filename[j] = s[i+1];
+                         }
+                         mgl_tek_filename[j] = '\0';
+                         mgl_tek_flag = TRUE;
+                         printf("writing file %s ...\n",mgl_tek_filename);
+                       }
+                       else if (strncmp(s+i+1,"ps",2)==0) {
+                         i += 2;
+                         while (isspace(s[i+1]) && i<len) i++;
+                         for (j=0; !isspace(s[i+1]) && i<len; i++, j++) {
+                           mgl_ps_filename[j] = s[i+1];
+                         }
+                         mgl_ps_filename[j] = '\0';
+                         mgl_ps_flag = TRUE;
+                         printf("writing file %s ...\n",mgl_ps_filename);
+                       }
+                       else if (strncmp(s+i+1,"hatch",5)==0) {
+                         i += 5;
+                         hatchflag= TRUE;
+                       }
+                       else if (strncmp(s+i+1,"centroids",9)==0) {
+                         /* Print the centroids */
+                         i += 9;
+                         centroidflag = TRUE;
+                       }
+                       while (!isalpha(s[i+1]) && s[i+1]!='-' && i<len) i++;
+                     }
+                     /* oldstuff */
+                     polyplot((short) n1,hatchflag,centroidflag); break;
+                     /* Reset flags again */
+                     mgl_hpgl_flag = mgl_tek_flag = mgl_ps_flag = FALSE;
+                     hatchflag = centroidflag = FALSE;
+          case 'a' : equil(1); break;
+          case 'e' : j=0;
+                     do { j++;
+                     } while (equil(0)>equilsup && ((REAL) j)<smaxiter);
+                     printf("network energy = %f\n",netenergy);
+                     printf("%d iterations taken...\n",j);
+                     break;
+          case 'E' : j=0;
+                     do {
 #ifdef IRIS
-                     zoom();
+                       zoom();
 #endif
-                     foamplot(0); j++;
-                   } while (equil(0)>equilsup && ((REAL) j)<smaxiter);
-                   printf("network energy = %f\n",netenergy);
-                   printf("%d iterations taken...\n",j);
-                   break;
-        case 'd' : diffuse(); break;
-        case 'D' : diffuse(); break;
-        case 'F' :
-          while (isspace(s[i+1]) && i<len) i++;
-          fflag=FALSE;
-          if (s[i+1]=='-' && isalpha(s[i+2])) {
-            switch (s[i+2]) {
-            case 'd' : fflag=TRUE; break;
-            case 'e' : flag=FALSE; break;
-            case 'E' : flag=TRUE; break;
-            default : flag=FALSE; break;
-            }
-            i += 2;
-          }
-          sscanf(s+i+1,"%f",&f);
-          if (fflag) {
-            if (volfrac==0.0) {
-              plerror("error: volume fraction not set");
-              plerror("error: first use 'F <number> without the '-d' option");
-              exit(0);
-            }
-            volfrac += (REAL)f;
-          }
-          else { volfrac= (REAL)f; }
-          while (!isalpha(s[i+1]) && i<len) i++;
-          makefraction(volfrac,flag); break;
-        case 'b' : hencky(eps); break;
-        case 'B' :
-          sscanf(s+i+1,"%f",&f);
-          while (!isalpha(s[i+1]) && i<len) i++;
-          eps= (REAL) f;
-          hencky(eps); break;
-        case 'h' : case 'H' : system("more help.txt"); break;
-        case 'g' : case 'G' :
-          ginteract=TRUE; mglreset();
-          break;
-        case 'i' :
-          if (!infoflag) { infoopen(); infoflag=TRUE; }
-          infowrite();
-          break;
-        case 'I' :
-          flag=FALSE; fflag=TRUE;
-          while (isspace(s[i+1]) && i<len) i++;
-          if (s[i+1]=='-' && isalpha(s[i+2])) {
-            switch (s[i+2]) {
-            case 'w' : flag=TRUE; break;
-            case 'W' : fflag=FALSE; break;
-            case 'c' :
-              if (infoflag) { infoclose(); infoflag=FALSE; }
-              break;
-            default : flag=FALSE; break;
-            }
-            i += 2;
-          }
-          if (s[i]!='c') {
-            sscanf(s+i+1,"%s",tok);
-            while (isspace(s[i+1]) && i<len) i++;
-            i += strlen(tok);
-            while (!isalpha(s[i+1]) && i<len) i++;
-            if (!infoflag) {
-              setinfo(tok,flag,fflag);
-            }
-            else {
-              plerror("cannot set new info while 'info.pb' is open");
-              plerror("use 'I -c' option to close this file");
-            }
-          }
-          break;
-        case 'r' : foamin("foam.pb"); setconstants(); break;
-        case 'R' :
-          sscanf(s+i+1,"%s",fname);
-          while (isspace(s[i+1]) && i<len) i++;
-          i += strlen(fname);
-          while (!isalpha(s[i+1]) && i<len) i++;
-          foamin(fname); setconstants();
-          break;
-        case 'w' : foamout("foam.pb"); break;
-        case 'W' :
-          sscanf(s+i+1,"%s",fname);
-          while (isspace(s[i+1]) && i<len) i++;
-          i += strlen(fname);
-          while (!isalpha(s[i+1]) && i<len) i++;
-          foamout(fname);
-          break;
-        case 'u' : case 'U' : break;
-        case 'n' : mglreset(); hexnet(1,1,0.4); setconstants(); break;
-        case 'N' :
-          mglreset();
-          sscanf(s+i+1,"%d%d%f",&n1,&n2,&f);
-          while (!isalpha(s[i+1]) && i<len) i++;
-          hexnet((short) n1,(short) n2,(REAL) f); setconstants(); break;
-        case 'v' : 
-          mglreset(); nc=MCELL; voronoi(nc); setconstants(); break;
-        case 'V' :
-          mglreset();
-          while (isspace(s[i+1]) && i<len) i++;
-          if (s[i+1]=='-' && isalpha(s[i+2])) {
-            switch (s[i+2]) {
-            case 'r' :
-              i += 2;
-              while (isspace(s[i+1]) && i<len) i++;
-              sscanf(s+i+1,"%f",&f); srfrac=(REAL) f;
-              while (!isspace(s[i+1]) && i<len) i++;
-              while (isspace(s[i+1]) && i<len) i++;
-              break;
-            default : printf("unrecognised option\n"); i += 2; break;
-            }
-          }
-          sscanf(s+i+1,"%d",&n1);
-          while (!isalpha(s[i+1]) && i<len) i++;
-          nc=(short) n1; voronoi(nc); setconstants(); break;
-        case 's' : break;  /* not yet implemented */
-        case 'S' :
-          while (isspace(s[i+1]) && i<len) i++;
-          if (s[i+1]=='-' && isalpha(s[i+2])) {
-            switch (s[i+2]) {
-            case 'w' :
-              i += 2;
-              while (isspace(s[i+1]) && i<len) i++;
-              sscanf(s+i+1,"%s",tok);
-              i += strlen(tok);
-              constantout(tok);
-              break;
-            default : printf("unrecognised option\n"); i += 2; break;
-            }
-          }
-          else {
-            sscanf(s+i+1,"%s%f",tok,&f);
-            while (isspace(s[i+1]) && i<len) i++;
-            i += strlen(tok);
-            while (!isalpha(s[i+1]) && i<len) i++;
-            setsconst(tok,(REAL) f);
-          }
-          break;
-        case 't' :
+                       foamplot(0,0); j++;
+                     } while (equil(0)>equilsup && ((REAL) j)<smaxiter);
+                     printf("network energy = %f\n",netenergy);
+                     printf("%d iterations taken...\n",j);
+                     break;
+          case 'd' : diffuse(); break;
+          case 'D' : diffuse(); break;
+          case 'F' :
+                     while (isspace(s[i+1]) && i<len) i++;
+                     fflag=FALSE;
+                     if (s[i+1]=='-' && isalpha(s[i+2])) {
+                       switch (s[i+2]) {
+                         case 'd' : fflag=TRUE; break;
+                         case 'e' : flag=FALSE; break;
+                         case 'E' : flag=TRUE; break;
+                         default : flag=FALSE; break;
+                       }
+                       i += 2;
+                     }
+                     sscanf(s+i+1,"%f",&f);
+                     if (fflag) {
+                       if (volfrac==0.0) {
+                         plerror("error: volume fraction not set");
+                         plerror("error: first use 'F <number> without the '-d' option");
+                         exit(0);
+                       }
+                       volfrac += (REAL)f;
+                     }
+                     else { volfrac= (REAL)f; }
+                     while (!isalpha(s[i+1]) && i<len) i++;
+                     makefraction(volfrac,flag); break;
+          case 'b' : hencky(eps); break;
+          case 'B' :
+                     sscanf(s+i+1,"%f",&f);
+                     while (!isalpha(s[i+1]) && i<len) i++;
+                     eps= (REAL) f;
+                     hencky(eps); break;
+          case 'h' : case 'H' : system("more help.txt"); break;
+          case 'g' : case 'G' :
+                                ginteract=TRUE; mglreset();
+                                break;
+          case 'i' :
+                                if (!infoflag) { infoopen(); infoflag=TRUE; }
+                                infowrite();
+                                break;
+          case 'I' :
+                                flag=FALSE; fflag=TRUE;
+                                while (isspace(s[i+1]) && i<len) i++;
+                                if (s[i+1]=='-' && isalpha(s[i+2])) {
+                                  switch (s[i+2]) {
+                                    case 'w' : flag=TRUE; break;
+                                    case 'W' : fflag=FALSE; break;
+                                    case 'c' :
+                                               if (infoflag) { infoclose(); infoflag=FALSE; }
+                                               break;
+                                    default : flag=FALSE; break;
+                                  }
+                                  i += 2;
+                                }
+                                if (s[i]!='c') {
+                                  sscanf(s+i+1,"%s",tok);
+                                  while (isspace(s[i+1]) && i<len) i++;
+                                  i += strlen(tok);
+                                  while (!isalpha(s[i+1]) && i<len) i++;
+                                  if (!infoflag) {
+                                    setinfo(tok,flag,fflag);
+                                  }
+                                  else {
+                                    plerror("cannot set new info while 'info.pb' is open");
+                                    plerror("use 'I -c' option to close this file");
+                                  }
+                                }
+                                break;
+          case 'r' : foamin("foam.pb"); setconstants(); break;
+          case 'R' :
+                     sscanf(s+i+1,"%s",fname);
+                     while (isspace(s[i+1]) && i<len) i++;
+                     i += strlen(fname);
+                     while (!isalpha(s[i+1]) && i<len) i++;
+                     foamin(fname); setconstants();
+                     break;
+          case 'w' : foamout("foam.pb"); break;
+          case 'W' :
+                     sscanf(s+i+1,"%s",fname);
+                     while (isspace(s[i+1]) && i<len) i++;
+                     i += strlen(fname);
+                     while (!isalpha(s[i+1]) && i<len) i++;
+                     foamout(fname);
+                     break;
+          case 'u' : case 'U' : break;
+          case 'n' : mglreset(); hexnet(1,1,0.4); setconstants(); break;
+          case 'N' :
+                     mglreset();
+                     sscanf(s+i+1,"%d%d%f",&n1,&n2,&f);
+                     while (!isalpha(s[i+1]) && i<len) i++;
+                     hexnet((short) n1,(short) n2,(REAL) f); setconstants(); break;
+          case 'v' : 
+                     mglreset(); nc=MCELL; voronoi(nc); setconstants(); break;
+          case 'V' :
+                     mglreset();
+                     while (isspace(s[i+1]) && i<len) i++;
+                     if (s[i+1]=='-' && isalpha(s[i+2])) {
+                       switch (s[i+2]) {
+                         case 'r' :
+                           i += 2;
+                           while (isspace(s[i+1]) && i<len) i++;
+                           sscanf(s+i+1,"%f",&f); srfrac=(REAL) f;
+                           while (!isspace(s[i+1]) && i<len) i++;
+                           while (isspace(s[i+1]) && i<len) i++;
+                           break;
+                         default : printf("unrecognised option\n"); i += 2; break;
+                       }
+                     }
+                     sscanf(s+i+1,"%d",&n1);
+                     while (!isalpha(s[i+1]) && i<len) i++;
+                     nc=(short) n1; voronoi(nc); setconstants(); break;
+          case 's' : break;  /* not yet implemented */
+          case 'S' :
+                     while (isspace(s[i+1]) && i<len) i++;
+                     if (s[i+1]=='-' && isalpha(s[i+2])) {
+                       switch (s[i+2]) {
+                         case 'w' :
+                           i += 2;
+                           while (isspace(s[i+1]) && i<len) i++;
+                           sscanf(s+i+1,"%s",tok);
+                           i += strlen(tok);
+                           constantout(tok);
+                           break;
+                         default : printf("unrecognised option\n"); i += 2; break;
+                       }
+                     }
+                     else {
+                       sscanf(s+i+1,"%s%f",tok,&f);
+                       while (isspace(s[i+1]) && i<len) i++;
+                       i += strlen(tok);
+                       while (!isalpha(s[i+1]) && i<len) i++;
+                       setsconst(tok,(REAL) f);
+                     }
+                     break;
+          case 't' :
 #ifdef IRIS
-          mgltest();
+                     mgltest();
 #endif
-          break;
-        case 'q' : case 'Q' :
-          if (infoflag) infoclose();
-          plerror("gurgle, gurgle, gurgle...");
-          exit(0); break;
-        case 'x' : case 'X' :
-          if (nestlevel==0) {
-            if (infoflag) infoclose();
-            plerror("gurgle, gurgle, gurgle..."); exit(0);
-          }
-          else return;
-        case 'z' :
+                     break;
+          case 'q' : case 'Q' :
+                     if (infoflag) infoclose();
+                     plerror("gurgle, gurgle, gurgle...");
+                     exit(0); break;
+          case 'x' : case 'X' :
+                     if (nestlevel==0) {
+                       if (infoflag) infoclose();
+                       plerror("gurgle, gurgle, gurgle..."); exit(0);
+                     }
+                     else return;
+          case 'z' :
 #if defined(IRIS)
-          zoom(); foamplot(0);
+                     zoom(); foamplot(0,0);
 #else
-          printf("zoom not implemented\n");
+                     printf("zoom not implemented\n");
 #endif
-          break;
-        case 'Z' :
+                     break;
+          case 'Z' :
 #if defined(IRIS)
-          zoom(); foamplot(0);
+                     zoom(); foamplot(0,0);
 #else
-          printf("zoom not implemented\n");
+                     printf("zoom not implemented\n");
 #endif
-          break;
-        default : ;
-          /*plerror("unrecognised command letter");*/
+                     break;
+          default : ;
+                    /*plerror("unrecognised command letter");*/
         }
       }
     }
