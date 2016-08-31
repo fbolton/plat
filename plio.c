@@ -107,10 +107,10 @@ void foamout(char *s)
   }
   fprintf(fp,"%d %d %d %d\n",nv,nc,nb,nbub);
   fprintf(fp,"%d %d %d\n",onv,onc,onb);
-  fprintf(fp,"%f %f %f %f\n",boxwid,boxhgt,bpav,henckyeps);
+  fprintf(fp,"%.9g %.9g %.9g %.9g\n",boxwid,boxhgt,bpav,henckyeps);
   for (ii=0; ii<nv; ii++) {
     fprintf(fp,"%d\n",i=vlist[ii]);
-    fprintf(fp,"%f %f\n",vx[i],vy[i]);
+    fprintf(fp,"%.9g %.9g\n",vx[i],vy[i]);
     for (j=0; j<3; j++) fprintf(fp,"%d ",vnbr[i][j]);
     fprintf(fp,"\n");
     for (j=0; j<3; j++) fprintf(fp,"%d ",vper[i][j]);
@@ -121,20 +121,20 @@ void foamout(char *s)
   for (ii=0; ii<nc; ii++) {
     fprintf(fp,"%d\n",i=clist[ii]);
     fprintf(fp,"%d\n",ncsides[i]);
-    fprintf(fp,"%f\n",cp[i]);
-    fprintf(fp,"%f\n",carea[i]+darea[i]);
+    fprintf(fp,"%.9g\n",cp[i]);
+    fprintf(fp,"%.9g\n",carea[i]+darea[i]);
   }
   for (ii=0; ii<nb; ii++) {
     fprintf(fp,"%d\n",i=blist[ii]);
     fprintf(fp,"%d\n",nbsides[i]);
-    fprintf(fp,"%f\n",bp[i]);
-    fprintf(fp,"%f\n",barea[i]);
+    fprintf(fp,"%.9g\n",bp[i]);
+    fprintf(fp,"%.9g\n",barea[i]);
   }
   for (ii=0; ii<nbub; ii++) {
     fprintf(fp,"%d\n",i=bublist[ii]);
-    fprintf(fp,"%f\n",cp[i]);
-    fprintf(fp,"%f\n",carea[i]+darea[i]);
-    fprintf(fp,"%f %f\n",cx[i],cy[i]);
+    fprintf(fp,"%.9g\n",cp[i]);
+    fprintf(fp,"%.9g\n",carea[i]+darea[i]);
+    fprintf(fp,"%.9g %.9g\n",cx[i],cy[i]);
   }
   fclose(fp);
 }
@@ -521,8 +521,8 @@ void infowrite()
         mu=0.0;
         for (j=0; j<21; j++) mu += (REAL) (j-nbar)*(j-nbar)*rho[j];
         mu /= (REAL) nc+nbub;
-        if (fflag) fprintf(ff,"%f",mu);
-        if (wflag) printf("muside = %f\n",mu);
+        if (fflag) fprintf(ff,"%.9g",mu);
+        if (wflag) printf("muside = %.9g\n",mu);
       }
       else if (strcmp(info_tok[i],"rhoside")==0) {
         calcrho(rho);
@@ -537,18 +537,18 @@ void infowrite()
       }
       else if (strcmp(info_tok[i],"muarea")==0) {
         mu=muarea();
-        if (fflag) fprintf(ff,"%f",mu);
-        if (wflag) printf("muarea = %f\n",mu);
+        if (fflag) fprintf(ff,"%.9g",mu);
+        if (wflag) printf("muarea = %.9g\n",mu);
       }
       else if (strcmp(info_tok[i],"arean")==0) {
         calcarean(arean);
         if (fflag) {
-          for (j=0; j<20; j++) fprintf(ff,"%f\t",arean[j]);
-          fprintf(ff,"%f",arean[20]);
+          for (j=0; j<20; j++) fprintf(ff,"%.9g\t",arean[j]);
+          fprintf(ff,"%.9g",arean[20]);
         }
         if (wflag) {
           printf("normalized area of n-cells:\n");
-          for (j=0; j<21; j++) printf("area%d = %f\n",j,arean[j]);
+          for (j=0; j<21; j++) printf("area%d = %.9g\n",j,arean[j]);
         }
       }
       else if (strcmp(info_tok[i],"bside")==0) {
@@ -564,12 +564,12 @@ void infowrite()
         }
       }
       else if (strcmp(info_tok[i],"netenergy")==0) {
-        if (fflag) fprintf(ff,"%f",netenergy);
-        if (wflag) printf("netenergy = %f\n",netenergy);
+        if (fflag) fprintf(ff,"%.9g",netenergy);
+        if (wflag) printf("netenergy = %.9g\n",netenergy);
       }
       else if (strcmp(info_tok[i],"henckyeps")==0) {
-        if (fflag) fprintf(ff,"%f",henckyeps);
-        if (wflag) printf("henckyeps = %f\n",henckyeps);
+        if (fflag) fprintf(ff,"%.9g",henckyeps);
+        if (wflag) printf("henckyeps = %.9g\n",henckyeps);
       }
       else if (strcmp(info_tok[i],"elosscount")==0) {
         if (fflag) fprintf(ff,"%d",elosscount);
@@ -581,34 +581,34 @@ void infowrite()
       }
       else if (strcmp(info_tok[i],"phi")==0) {
         f=phifn();
-        if (fflag) fprintf(ff,"%f",f);
-        if (wflag) printf("phi = %f\n",f);
+        if (fflag) fprintf(ff,"%.9g",f);
+        if (wflag) printf("phi = %.9g\n",f);
       }
       else if (strcmp(info_tok[i],"nbar")==0) {
         calcrho(rho);
         nbar=nbarfn(rho);
-        if (fflag) fprintf(ff,"%f",nbar);
-        if (wflag) printf("nbar = %f\n",nbar);
+        if (fflag) fprintf(ff,"%.9g",nbar);
+        if (wflag) printf("nbar = %.9g\n",nbar);
       }
       else if (strcmp(info_tok[i],"edgefrac")==0) {
         f=efracfn();
-        if (fflag) fprintf(ff,"%f",f);
-        if (wflag) printf("edgefrac = %f\n",f);
+        if (fflag) fprintf(ff,"%.9g",f);
+        if (wflag) printf("edgefrac = %.9g\n",f);
       }
       else if (strcmp(info_tok[i],"z")==0) {
         calcrho(rho);
         f=zfn(rho);
-        if (fflag) fprintf(ff,"%f",f);
-        if (wflag) printf("z = %f\n",f);
+        if (fflag) fprintf(ff,"%.9g",f);
+        if (wflag) printf("z = %.9g\n",f);
       }
       else if (strcmp(info_tok[i],"arootbar")==0) {
         f=arootfn();
-        if (fflag) fprintf(ff,"%f",f);
-        if (wflag) printf("arootbar = %f\n",f);
+        if (fflag) fprintf(ff,"%.9g",f);
+        if (wflag) printf("arootbar = %.9g\n",f);
       }
       else if (strcmp(info_tok[i],"minenergy")==0) {
-        if (fflag) fprintf(ff,"%f",minenergy);
-        if (wflag) printf("minenergy = %f\n",minenergy);
+        if (fflag) fprintf(ff,"%.9g",minenergy);
+        if (wflag) printf("minenergy = %.9g\n",minenergy);
       }
       else if (strcmp(info_tok[i],"adjmat")==0) {
         /*This is a slightly different one in that it writes to seperate files*/
