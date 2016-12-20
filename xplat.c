@@ -231,6 +231,7 @@ char mgl_hpgl_filename[256], mgl_tek_filename[256], mgl_ps_filename[256];
 short knbr[3] = {0, 2, 1};
 REAL vx[MVERT], vy[MVERT], cp[MCELL], carea[MCELL], darea[MCELL], dvx[MVERT],
      dvy[MVERT], dcp[MCELL], cxcent[MCELL], cycent[MCELL];
+REAL forces[MCELL][MCELL];
 REAL bpav=0.0, bp[MBORD], barea[MBORD];
 short vlist[MVERT], clist[MCELL], blist[MBORD], bublist[MCELL], vnbr[MVERT][3],
       vper[MVERT][3], cadj[MVERT][3];
@@ -818,7 +819,7 @@ void s_execute(s, nestlevel)
                      hatchflag = centroidflag = FALSE;
           case 'a' : equil(1); break;
           case 'e' : j=0;
-                     do { 
+                     do {
                        /*
                         *if (xuser_show_equil==1) foamplot(0,0);
                         *if (XtAppPending(app_context)) {

@@ -37,7 +37,7 @@
  *			the two given boxes (e.g. the first two boxes in this
  *			list will inevitably be the two boxes `i1' and `j1'
  *			themselves).  The resulting list of nine boxes are
- *			encoded as periodic indices and returned in the 
+ *			encoded as periodic indices and returned in the
  *			array `ko[0..8]'.
  *
  *	Acknowledgements: Adapted from a routine by J. P. Kermode.
@@ -306,7 +306,7 @@ void normalizep()
  *	Return value:	none
  *
  *	Action:		Make sure that the total area of all the objects inside
- *			a periodic box is *equal* to the area of the periodic 
+ *			a periodic box is *equal* to the area of the periodic
  *			box (discrepancies could arise due to cumulative
  *			numerical errors).  If an adjustment needs to be made
  *			then adjust the areas of the Plateau borders so that
@@ -366,7 +366,7 @@ short i;
 {
   REAL xlim, ylim, x, y;
   short j, k, k1;
-  xlim=boxwid/2.0; ylim= boxhgt/2.0; 
+  xlim=boxwid/2.0; ylim= boxhgt/2.0;
   x=vx[i]; y=vy[i];
   if (x>xlim) {
     vx[i] -= boxwid;
@@ -650,7 +650,7 @@ short i, j, j1;
  *			     |     |       +--- x-vector component
  *			     |     +----------- y-vector component
  *			     +----------------- large-arc flag
- *			
+ *
  *			The ensuing subroutines simply make up a convenient
  *			interface to this compactly stored information and
  *			involve some simple exercises in binary arithmetic.
@@ -659,7 +659,7 @@ short i, j, j1;
  *			periodic vector (ix, iy) and returns a periodic index.
  *			The routines (perx(per), pery(per)) extract the
  *			periodic vector from the periodic index `per'.
- *			
+ *
  *			SETLARC() AND LARC():
  *			The routine `setlarc(per, la)' sets the large-arc flag
  *			bit of `per' to 0 or 1 according as `la' is true or
@@ -716,7 +716,7 @@ short i, k;
 {
   return (boolean) (vper[i][k] & LARC)>>8;
 }
-  
+
 void setlarc(i1, la)
 short *i1;
 boolean la;
@@ -801,7 +801,7 @@ short i;
   short ii, kk;
   for (ii=0; ii<nv; ii++)
     if (i==vlist[ii]) break;
-  if (ii==nv) 
+  if (ii==nv)
     plerror("index not found in routine vforgetindex()");
   else {
     for (kk=ii; kk<nv-1; kk++) vlist[kk]=vlist[kk+1];
@@ -817,7 +817,7 @@ short i;
   short ii, kk;
   for (ii=0; ii<nc; ii++)
     if (i==clist[ii]) break;
-  if (ii==nc) 
+  if (ii==nc)
     plerror("index not found in routine cforgetindex()");
   else {
     for (kk=ii; kk<nc-1; kk++) clist[kk]=clist[kk+1];
@@ -833,7 +833,7 @@ short i;
   short ii, kk;
   for (ii=0; ii<nb; ii++)
     if (i==blist[ii]) break;
-  if (ii==nb) 
+  if (ii==nb)
     plerror("index not found in routine bforgetindex()");
   else {
     for (kk=ii; kk<nb-1; kk++) blist[kk]=blist[kk+1];
@@ -1326,14 +1326,14 @@ REAL alpha, p1, p2;
  *
  *	Subroutine:	VOID arccentroid(REAL x1, y1, x2, y2, r, alpha, *xc, *yc)
  *
- *	Arguments:	(x1, y1),  (x2, y2) = endpoints of arc 
+ *	Arguments:	(x1, y1),  (x2, y2) = endpoints of arc
  *			r = radius of curvature
  *			alpha = opening angle of arc
  *			(*xc, *yc) = centroid of segment
  *
  *	Return value:	none
  *			computes the centroid of the circular segment defined by
- *			arc endpoints (x1,y1), (x2, y2) and radius of curvature r, 
+ *			arc endpoints (x1,y1), (x2, y2) and radius of curvature r,
  *			with opening angle alpha and stores the result in (*cx, *cy)
  *
  *****************************************************************************/
@@ -1345,7 +1345,7 @@ REAL *xc, *yc;
 	REAL theta = twopimod(linangle(x1,y1,x2,y2) + M_PI_2);
 	arccentre(x1, y1, x2, y2, alpha, xc, yc);
 	REAL openingAngle = fabs(alpha) * 0.5;
-	REAL rcentroid = 4 * r * sin(openingAngle) * sin(openingAngle) * sin(openingAngle) / (3 * (2 * openingAngle - sin(2 * openingAngle))); 
+	REAL rcentroid = 4 * r * sin(openingAngle) * sin(openingAngle) * sin(openingAngle) / (3 * (2 * openingAngle - sin(2 * openingAngle)));
 	if( alpha < 0){
 		theta = twopimod(theta + M_PI);
 	}
@@ -1386,7 +1386,7 @@ REAL x1, y1, x2, y2;
  *
  *	Subroutine:	REAL cangle(REAL x1, y1, x2, y2, p1, p2)
  *
- *	Arguments:	
+ *	Arguments:
  *				    p2
  *				  -------
  *				/        \
@@ -1398,7 +1398,7 @@ REAL x1, y1, x2, y2;
  *				illustrated roughly in the diagram
  *
  *	Return value:	Gives the angle between the positive x-axis and the
- *			tangent to the arc at (x1, y1).  
+ *			tangent to the arc at (x1, y1).
  *
  *****************************************************************************/
 REAL cangle(x1, y1, x2, y2, p1, p2)
@@ -1418,7 +1418,7 @@ REAL x1, y1, x2, y2, p1, p2;
  *	Subroutine:	REAL bangle(REAL x1, y1, x2, y2, p1, p2,
  *				boolean la, *arcbrk)
  *
- *	Arguments:	
+ *	Arguments:
  *				    p2
  *				  -------
  *				/        \
@@ -1432,7 +1432,7 @@ REAL x1, y1, x2, y2, p1, p2;
  *			*arcbrk = flag to indicate `arc breakage' condition
  *
  *	Return value:	Gives the angle between the positive x-axis and the
- *			tangent to the arc at (x1, y1).  
+ *			tangent to the arc at (x1, y1).
  *
  *			See routine `barcangle()' above for comments on the
  *			significance of arguments `la' and `*arcbrk'.
@@ -1567,7 +1567,7 @@ boolean la, *arcbrk;
  *
  *	Return value:	Area of the cell specified by `i' and `k'.
  *			The regions adjacent to vertex `i' are given in a
- *			standard order by the neighbour index `k = 0, 1 or 2'.  
+ *			standard order by the neighbour index `k = 0, 1 or 2'.
  *			The value `k=0' always selects the adjacent Plateau
  *			border (an illegal choice for this routine) and `k=1'
  *			or `k=2' select the two adjacent cells in
@@ -1601,7 +1601,7 @@ boolean *arcbrk;
  *
  *	Return value:	Perimeter length of the cell specified by `i' and `k'.
  *			The regions adjacent to vertex `i' are given in a
- *			standard order by the neighbour index `k = 0, 1 or 2'.  
+ *			standard order by the neighbour index `k = 0, 1 or 2'.
  *			The value `k=0' always selects the adjacent Plateau
  *			border (an illegal choice for this routine) and `k=1'
  *			or `k=2' select the two adjacent cells in
@@ -1641,7 +1641,7 @@ boolean *arcbrk;
  *	Return value:	Calculates, optionally, both the cell area and
  *			perimeter length for the cell specified by `i' and `k'.
  *			The regions adjacent to vertex `i' are given in a
- *			standard order by the neighbour index `k = 0, 1 or 2'.  
+ *			standard order by the neighbour index `k = 0, 1 or 2'.
  *			The value `k=0' always selects the adjacent Plateau
  *			border (an illegal choice for this routine) and `k=1'
  *			or `k=2' select the two adjacent cells in
@@ -1680,7 +1680,7 @@ boolean caflg, clflg, ccflg, *arcbrk;
     if (*arcbrk) break;
     if (caflg || ccflg) *ca += arcarea;
     if (clflg) *cl += barclen(x3,y3,x2,y2,p1,pb,la,arcbrk);
-		if (ccflg){ 
+		if (ccflg){
 			arccentroid(x3,y3,x2,y2,BRADIUS(p1,pb),alpha,&xc,&yc);
 			*ccx += xc * arcarea;
 			*ccy += yc * arcarea;
@@ -1708,8 +1708,11 @@ boolean caflg, clflg, ccflg, *arcbrk;
     alpha=carcangle(x3,y3,x2,y2,p1,p2);
 		arcarea = carcarea(alpha,p1,p2);
     if (caflg || ccflg) *ca += arcarea;
-    if (clflg) *cl += carclen(x3,y3,x2,y2,p1,p2);
-		if (ccflg){ 
+    if (clflg){
+      *cl += carclen(x3,y3,x2,y2,p1,p2);
+      forces[c][cadj[i][1]] = carclen(x3,y3,x2,y2,p1,p2);
+    }
+		if (ccflg){
 			arccentroid(x3,y3,x2,y2,CRADIUS(p1,p2),alpha,&xc,&yc);
 			*ccx += xc * arcarea;
 			*ccy += yc * arcarea;
@@ -1907,7 +1910,7 @@ REAL dbp;
  *
  *			SPECIFICATION OF THE GIVEN CELL:
  *			The regions adjacent to vertex `i' are given in a
- *			standard order by the neighbour index `k = 0, 1 or 2'.  
+ *			standard order by the neighbour index `k = 0, 1 or 2'.
  *			The value `k=0' always selects the adjacent Plateau
  *			border (an illegal choice for this routine) and `k=1'
  *			or `k=2' select the two adjacent cells in
@@ -1915,7 +1918,7 @@ REAL dbp;
  *
  *			ALGORITHM TO REMEDY BROKEN ARCS:
  *			The routine runs around all the arcs on the perimeter
- *			of the cell, `popping' any border arcs which are 
+ *			of the cell, `popping' any border arcs which are
  *			broken.  But popping is only done in the direction that
  *			the arcs want to go.  For example if the cell is
  *			currently trying to increase its area (`darea[c]>0')
@@ -2079,10 +2082,10 @@ short b;
  *
  *	Subroutine:	void centroids()
  *
- *	Arguments:	
+ *	Arguments:
  *
- *	Return value:	
- * 
+ *	Return value:
+ *
  *  This function fills in the cxcent and cycent arrays with centroid coords
  *
  *****************************************************************************/
@@ -2198,7 +2201,7 @@ int idum;
   ma[inext]=mj;
   return (mj*FAC);
 }
-               
+
 /**************************/
 /* Error handling routine */
 /**************************/

@@ -34,11 +34,11 @@ void vfoamout(s)
   for (i=0; i<nv; i++) {
     fprintf(fp,"%f %f\n",vx[i],vy[i]);
     for (j=0; j<3; j++) fprintf(fp,"%d ",vorvnbr[i][j]);
-    fprintf(fp,"\n");  
+    fprintf(fp,"\n");
     for (j=0; j<3; j++) fprintf(fp,"%d ",vorcadj[i][j]);
-    fprintf(fp,"\n");  
+    fprintf(fp,"\n");
     for (j=0; j<3; j++) fprintf(fp,"%d ",vorvper[i][j]);
-    fprintf(fp,"\n");  
+    fprintf(fp,"\n");
   }
   fclose(fp);
 }
@@ -966,17 +966,17 @@ void setinfo(tok,wflag,fflag)
  *
  *	Subroutine:	cadjm()
  *
- *	Arguments:	 
+ *	Arguments:
  *
  *	Return value:	none
  *
- *	Action:		Traveses all cells and for each cell, walks it's	
- *			perimeter, recording all neighbours in an 
+ *	Action:		Traveses all cells and for each cell, walks it's
+ *			perimeter, recording all neighbours in an
  *			adjacency matrix.
- *			
+ *
  *			This matrix is then checked for symmetry and
  *			then output into a sequentially numbered file.
- *			
+ *
  *
  *****************************************************************************/
 void cadjm()
@@ -1025,11 +1025,11 @@ void cadjm()
 
   for(c=0;c<nc;c++){
     for(k=0;k<nc;k++){
-      fprintf(matout,"%d\t",adjmat[c][k]);
+      fprintf(matout,"%.9e\t",forces[c][k]);
     }
     fprintf(matout,"\n");
   }
-  /* 
+  /*
    *  free all allocated memory and close all opened filepointers
    */
   free(data);
@@ -1046,11 +1046,11 @@ void cadjm()
  *
  *	Subroutine:	cellcentroids()
  *
- *	Arguments:	 
+ *	Arguments:
  *
  *	Return value:	none
  *
- *	Action:		Traveses all cells and for each cell, 
+ *	Action:		Traveses all cells and for each cell,
  *		calculates the centroid of the cell using the
  *		centroids routene, which uses the careaperim() routine
  *

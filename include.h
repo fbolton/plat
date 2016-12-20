@@ -50,7 +50,7 @@ Voronoi triangulation search circle.  Roughly in units of a typical
 cell diameter */
 
 #define HARDRFRAC 0.65  /* This specifies the minimum distance between any
-two points in the voronoi network.  It is specified as a fraction of the 
+two points in the voronoi network.  It is specified as a fraction of the
 hexagonal close packing value, thus '1.0' is the max possible! */
 
 #define VORSEED 1  /* Can be any +ve int (a random number seed) */
@@ -251,6 +251,7 @@ extern char mgl_hpgl_filename[256], mgl_tek_filename[256], mgl_ps_filename[256];
 extern short knbr[3];
 extern REAL vx[MVERT], vy[MVERT], cp[MCELL], carea[MCELL], darea[MCELL],
        dvx[MVERT], dvy[MVERT], dcp[MCELL], cxcent[MCELL], cycent[MCELL];
+extern REAL forces[MCELL][MCELL];
 extern REAL bpav, bp[MBORD], barea[MBORD];
 extern short vlist[MVERT], clist[MCELL], blist[MBORD], bublist[MCELL],
              vnbr[MVERT][3], vper[MVERT][3], cadj[MVERT][3];
