@@ -25,4 +25,4 @@ Hewlett-Packard Printer */
 #define POSTSCRIPT
 
 /* Include the following line to use 'X' windows */
-#define X_WINDOWS
+//#define X_WINDOWS

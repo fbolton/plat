@@ -20,6 +20,7 @@ short knbr[3] = {0, 2, 1};
 REAL vx[MVERT], vy[MVERT], cp[MCELL], carea[MCELL], darea[MCELL], dvx[MVERT],
      dvy[MVERT], dcp[MCELL], cxcent[MCELL], cycent[MCELL];
 REAL bpav=0.0, bp[MBORD], barea[MBORD];
+REAL forces[MCELL][MCELL];
 short vlist[MVERT], clist[MCELL], blist[MBORD], bublist[MCELL], vnbr[MVERT][3],
       vper[MVERT][3], cadj[MVERT][3];
 short nbsides[MBORD], ncsides[MCELL], iel[MELOST];
@@ -419,7 +420,7 @@ void s_execute(s, nestlevel)
                      sscanf(s+i+1,"%d%d%f",&n1,&n2,&f);
                      while (!isalpha(s[i+1]) && i<len) i++;
                      hexnet((short) n1,(short) n2,(REAL) f); setconstants(); break;
-          case 'v' : 
+          case 'v' :
                      mglreset(); nc=MCELL; voronoi(nc); setconstants(); break;
           case 'V' :
                      mglreset();
