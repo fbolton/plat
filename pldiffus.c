@@ -71,7 +71,7 @@ void diffuse()
  *
  *	Action:		This routine changes the area fraction of a wet foam
  *			until it reaches the target fraction `phi0' (which
- *			may be either greater or lesser than the existing 
+ *			may be either greater or lesser than the existing
  *			fraction `phi').  Since the initialisation routines
  *			can only generate foams with very small Plateau
  *			borders (i.e. `phi' close to 0.99) this subroutine
