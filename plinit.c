@@ -28,7 +28,7 @@
  *			network consists of 2 * ny cells horizontally, before
  *			the period wraps around, and `nx' cells vertically.
  *			The total size of the network will thus be `2*nx*ny'.
- *			Plateau borders have their size determined by 
+ *			Plateau borders have their size determined by
  *			`f' which is the fraction of a cell edge covered.
  *
  *			The construction of the froth is done in two stages.
@@ -200,7 +200,7 @@ REAL f;  /* f = fraction of edge covered by PB */
  *			The number of points requested is passed in `*pnc'
  *			and the generated points are put into the arrays
  *			(x[], y[]).  Note that it is impractical to request
- *			distributions with order `rminfrac' much greater 
+ *			distributions with order `rminfrac' much greater
  *			than about 0.6
  *
  *	Acknowledgements: Adapted from a routine by J. P. Kermode.
@@ -225,12 +225,12 @@ short *pnc;
     *pnc=0; plerror("hard disc too large in routine vorspray");
     return;
   }
-  if (rseed!=0) { 
+  if (rseed!=0) {
 #ifndef FIXEDSEED
 		gettimeofday(&now,NULL);
 		rseed = now.tv_usec;
 #endif
-		ran3(-rseed); 
+		ran3(-rseed);
 		rseed=0; svorseed=0.0; }
   x[0]=(ran3(0)-0.5)*wid; y[0]=(ran3(0)-0.5)*hgt; np++;
   while (np<*pnc) {
@@ -294,7 +294,7 @@ short *pnc;
  *			subroutines `dltri1()' and `dltri2()' ) and
  *			geometrical information is stored in the arrays
  *			(vx[], vy[]) which store the centre points of the
- *			triangles.  The format of the array `triang[][][]' is 
+ *			triangles.  The format of the array `triang[][][]' is
  *			as follows:
  *				triang[triangle_index][nbr_list][info_type]
  *			where the `triangle_index' (in the range 0..nv)
@@ -310,12 +310,12 @@ short *pnc;
  *			and `PERY()' for more details).  Thus, in summary,
  *			array `triang' essentially tells you who your
  *			neighbours are.
- *			
+ *
  *			PERIODIC INDICES:
  *			Throughout the Delauney routines it is important to
  *			keep in mind that an (index, periodic index) go
  *			together as a pair.  Both indices, e.g. (i, i1), are
- *			essentially needed to uniquely identify a point 
+ *			essentially needed to uniquely identify a point
  *			(where `i1' essentially tells you which periodic box
  *			the point is in).
  *
@@ -353,7 +353,7 @@ short *pnc;
  *			Essentially we focus on point `i' (as found in (i) )
  *			and use it as a `pivot' point.  A sequence of
  *			triangles are found (using `dltri2()' ) adding spokes
- *			to the wheel.  All the points around the rim of the 
+ *			to the wheel.  All the points around the rim of the
  *			wheel are stored in
  *			(index= wheel[rim_index][0],
  *		 	              periodic index= wheel[rim_index][1] )
@@ -364,7 +364,7 @@ short *pnc;
  *
  *			(iii) Once a wheel-ful of triangles has been found,
  *			try using one of the points on the rim of the wheel
- *			as a new pivot point (but check it has not been 
+ *			as a new pivot point (but check it has not been
  *			used as a pivot before by looking up the array
  *			`waspivot[]').  If a pivot point is found then do
  *			step (iv) else step (v).
@@ -391,7 +391,7 @@ boolean vordelauney()
   short wheel[MWHEEL][2];
   short i, i1, j, j1, k, k1, jj, jj1, je, je1, l, ll, nwh, npv;
   boolean flag, dltri1(), dltri2(), inbox();
-  void plerror(); 
+  void plerror();
   for (i=0; i<nc; i++) waspivot[i]=FALSE;
   npv=0;		/* ...number of pivot points used so far */
   i=i1=0;
@@ -671,12 +671,12 @@ short *i, *i1, *j, *j1, *k, *k1;
  * 			(*k, *k1) because you already have this point (in a
  * 			tiling of triangles, a given edge will be adjacent to
  * 			exactly two triangles).
- * 
+ *
  * 			Two different attempts can be made to find a suitable
  * 			triangle.  Firstly, the existing network of triangles
  * 			is searched to see if a suitable triangle can be
  * 			found there, with third vertex *k not equal to jj.
- * 
+ *
  * 			Otherwise, a new triangle must be found.  A search is
  * 			made for a point (*k, *k1) which completes a Delauney
  * 			triangle with (i, i1) and (j, j1).
@@ -768,7 +768,7 @@ short i, i1, j, j1, *k, *k1, jj, jj1;
                   ix1=PERX(triang[t][l][1])-PERX(i1);
                   iy1=PERY(triang[t][l][1])-PERY(i1);
 		  /*
-		   * The vector (ix1, iy1) is then used to translate *k1 to a 
+		   * The vector (ix1, iy1) is then used to translate *k1 to a
 		   * location which is consistent with (i, i1) and (j, j1).
 		   *
 		   * Note that PERFN() is used to translate a periodic vector
@@ -889,7 +889,7 @@ short i, i1, j, j1, *k, *k1, jj, jj1;
  *
  *			This routine has essentially to initialise the
  *			matrices `vorvnbr[][]', `vorcadj[][]' and
- *			`vorvper[][]' which define the topology of the dry 
+ *			`vorvper[][]' which define the topology of the dry
  *			froth network.  The main loop of this routine runs
  *			through all possible pairs of triangles `i' and `j'
  *			in an attempt to find a pair which share one edge in
@@ -926,7 +926,7 @@ void vordrytopol()
    */
   /*
    * Loop over all triangles (vertices) `i' and all triangles (vertices) `j'.
-   * They each loop over their three neighbours indices `k' and `k1' 
+   * They each loop over their three neighbours indices `k' and `k1'
    * respectively, to see if they are each others neighbour.
    */
   for (i=0; i<nv-1; i++)
@@ -1012,7 +1012,7 @@ void vordrytopol()
    * swapping the information in the topological arrays).
    *
    * Note that here, for the first time, we use the routine
-   * `vorvnbrxy(i, k, &x, &y)'.  This is a useful routine which 
+   * `vorvnbrxy(i, k, &x, &y)'.  This is a useful routine which
    * returns the coordinates (x, y) of the `k'th neighbour of vertex `i'.
    * This humble task is just a bit messier than you might expect on account
    * of the periodic boundary conditions!  (you want the neighbours all in
@@ -1152,7 +1152,7 @@ REAL vordeltasearch()
  *
  *	Action:		This subroutine converts a dry foam network into a
  *			Plateau border foam network.  It works by decorating
- *			each vertex of the dry foam network with a *small* 
+ *			each vertex of the dry foam network with a *small*
  *			three-sided Plateau border.  The initial size of the
  *			Plateau borders is determined by the argument `d'.
  *
@@ -1180,7 +1180,7 @@ REAL vordeltasearch()
  *			always connected along a cell-cell arc while the other
  *			two neighbours are connected via border-cell arcs.
  *			(A `cell-cell' arc is an arc which has a cell on
- *			either side of it, while a `border-cell' arc has a 
+ *			either side of it, while a `border-cell' arc has a
  *			Plateau border on one side and a cell on the other).
  *			In order to remember which arc is which, the
  *			neighbours are indexed in a standard order.  The
@@ -1194,11 +1194,11 @@ REAL vordeltasearch()
  *				vnbr[newi][newk] := index of the newk'th
  *				neighbour of vertex `newi', where nbr newk=0
  *				lies along a cell-cell arc.
- *				
+ *
  *				vper[newi][newk] := info vis a vis periodic
  *				boundary conditions for nbr `newk' of
  *				vertex `newi'.
- *			
+ *
  *			In the new topology the cells and Plateau borders are
  *			numbered separately.  The numbering of cells is simply
  *			the same as the old dry topology.  The Plateau borders
@@ -1404,7 +1404,7 @@ REAL *param[] = { &svdamp, &svvdamp, &spdamp, &sbpdamp, &sbprelax, &sminbfrac,
  *
  *	Action:		This routine prints the value of the parameter whose
  *			name is given by the string `tok[]'.  It does this
- *			with the help of the two arrays `param_tok[][]' and 
+ *			with the help of the two arrays `param_tok[][]' and
  *			`*param[]' listed above.
  *
  *****************************************************************************/
