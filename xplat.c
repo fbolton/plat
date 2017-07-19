@@ -259,7 +259,7 @@ char info_tok[][20]={"muside", "rhoside", "muarea", "arean", "bside",
 boolean info_list[MINFO], info_wlist[MINFO], foamlike, ginteract=FALSE,
         notopol=FALSE;
 
-main(int argc, char **argv)
+int main(int argc, char **argv)
 {
   /*
    * 'plat' Initialisation Routines:
@@ -480,6 +480,7 @@ main(int argc, char **argv)
   XtRealizeWidget(topLevel);
 
   XtAppMainLoop(app_context);
+  return 0;
 }
 
   void
