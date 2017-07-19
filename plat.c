@@ -165,7 +165,7 @@ boolean sprompt(s, nestlevel)
   for (i=0; i<nestlevel; i++) printf("{");
   printf("> ");
   do {
-    if (!gets(s)) {
+    if (!fgets(s, 255, stdin)) {
       plerror("error while reading command input"); return FALSE;
     }
     for (len=strlen(s); len>0 && isspace(s[len-1]); len--);
