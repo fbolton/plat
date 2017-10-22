@@ -1,0 +1,36 @@
+= `plat` Version 1.0
+
+== Prerequisites
+Make sure that the X Motif libraries (and development files) are installed on your machine.
+For example, on Fedora Linux you can install the Motif package as follows:
+
+----
+sudo dnf install motif-devel
+----
+
+Installation of the `plat` package ought to be reasonably straightforward.
+The `Makefile` is not very clever, on the other hand there are not many
+pitfalls since the code is quite self-contained.
+Perform the following steps:
+
+. Edit the file `machine.h`.
+This has a few options connected with the kind of graphics you might want to use.
+If you want to compile with the X/Motif user interface, version `xplat`, then make sure that `#define X_WINDOWS` is not commented out.
+Conversely, you should comment it out if you want to compile the plain version `plat`, with no interactive graphics.
+
+. Edit the `Makefile`.
+The only thing you might need to change is the `GRAPHLIB` constant if your X libraries are in a different directory to mine.
+
+. Depending on which flavour of the program you want, type `make xplat` or just plain `make plat` for no interactive graphics.
+
+. If you typed `make xplat` then copy the X resources file `XPlat` to the application defaults directory (on my machine this is in ``/usr/lib64/X11/app-defaults`).
+
+Then try running `xplat` (or respectively `plat`) and keep your fingers crossed.
+
+Help with the commands is to be found in the file `help.txt` (note that the program assumes it is in the same directory as the help file, in order to find it).
+
+Extensive documentation in postscript form is found in the subdirectory `doc`.
+
+An example of a command file is to be found in the shellscript `example.sh`.
+
+Copyright (c) 1996, Fintan Bolton, fintan.bolton@pure-corba.com
