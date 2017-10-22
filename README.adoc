@@ -8,6 +8,7 @@ For example, on Fedora Linux you can install the Motif package as follows:
 sudo dnf install motif-devel
 ----
 
+== Installation
 Installation of the `plat` package ought to be reasonably straightforward.
 The `Makefile` is not very clever, on the other hand there are not many
 pitfalls since the code is quite self-contained.
@@ -23,7 +24,7 @@ The only thing you might need to change is the `GRAPHLIB` constant if your X lib
 
 . Depending on which flavour of the program you want, type `make xplat` or just plain `make plat` for no interactive graphics.
 
-. If you typed `make xplat` then copy the X resources file `XPlat` to the application defaults directory (on my machine this is in ``/usr/lib64/X11/app-defaults`).
+. If you typed `make xplat` then copy the X resources file `XPlat` to the application defaults directory (on my machine this is in `/usr/lib64/X11/app-defaults`).
 
 Then try running `xplat` (or respectively `plat`) and keep your fingers crossed.
 
