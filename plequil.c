@@ -44,8 +44,8 @@
  *
  *****************************************************************************/
 void ptrelax(i,dx1,dy1)
-short i;
-REAL *dx1, *dy1;
+  short i;
+  REAL *dx1, *dy1;
 {
   short c1, c2, ii, j, k;
   REAL del, del2, x1, y1, x2, y2, x11, y11, x12, y12, p1, p2, pb, delp2,
@@ -179,7 +179,7 @@ REAL *dx1, *dy1;
  *
  *****************************************************************************/
 void matinv2(m)
-REAL m[2][2];
+  REAL m[2][2];
 {
   REAL x;
   void plerror();
@@ -263,19 +263,19 @@ REAL m[2][2];
  *			of this is that Plateau borders will coalesce.
  *			(viii) Cell area update:  The new geometrical areas
  *			of all the cells are recalculated and stored in
- *			`carea[]' (note that the target cell areas = 
+ *			`carea[]' (note that the target cell areas =
  *			`carea[i]+darea[i]' remain the same).
  *
- *
- *****************************************************************************/
+*
+  *****************************************************************************/
 REAL equil(adjustflag)
-boolean adjustflag;
+  boolean adjustflag;
 {
-/* This drives the equilibration and topological routines, doing
-a single pass of the whole network.  The value returned is a figure to
-indicate how converged the network is.
-   The convergence error used is the supremum of the increments to the
-vertices. */
+  /* This drives the equilibration and topological routines, doing
+     a single pass of the whole network.  The value returned is a figure to
+     indicate how converged the network is.
+     The convergence error used is the supremum of the increments to the
+     vertices. */
   short i, i1, i2, k, j, j1, k1, c1, c2, b, ii, icount;
   REAL x1,y1,x11,y11,x12,y12,x2,y2,x21,y21,x22,y22,p1,p2,da1,da2,dp1,dp2,sup,xc,yc;
   REAL prate, vrate, vvrate, maxdcp, maxcp, dcp1, delp, delp2, dadp, maxdafrac,
@@ -384,7 +384,7 @@ vertices. */
           dadp=(a3-a1)/delp;
           dp1=0.5*sbpdamp*(barea[b]-a2)/dadp;
           bmaxdafrac=
-                 (bmaxdafrac>(f=fabs((a2-barea[b])/barea[b])))?bmaxdafrac : f;
+            (bmaxdafrac>(f=fabs((a2-barea[b])/barea[b])))?bmaxdafrac : f;
           if (fabs(dp1)>delp) {
             stuck=FALSE;
             /* Restrict increments to 0.1 of 'bpav' */
@@ -453,7 +453,7 @@ vertices. */
             dp1= -dp1/((REAL) ncsides[c1]);
             if (k==2) { i=vnbr[i][0]; k=1; }
             j=i;
-          }	
+          }
         }
       }
     }
@@ -543,192 +543,192 @@ vertices. */
     ptrelax(i,&dvx[i],&dvy[i]);
   }
 ADJUST : ;
-  if (adjustflag) { vrate=1.0; vvrate=1.0; }
-  else if (foamlike) { vrate=0.5*svdamp; vvrate=0.5*svvdamp; }
-  else { vrate = vvrate = 0.5*svvdamp; }
-  /* the factor of 0.5 anticipates the fact that the increments */
-  /* tend to overshoot */
-  /*
-   * Calculate the convergence criterion `sup'...
-   * (which is the largest suggested increment to a vertex)
-   */
-  for (ii=0; ii<nv; ii++) {
-    i=vlist[ii];
-    sup= (sup>fabs(dvx[i])) ? sup : fabs(dvx[i]);
-    sup= (sup>fabs(dvy[i])) ? sup : fabs(dvy[i]);
-  }
-  if (adjustflag) goto ADJUST1;
-  for (i=0; i<onb; i++) found[i]=FALSE;
-  /*
-   * Turn the suggested increments (dvx[], dvy[]) into reasonable
-   * sized increments.  As was noted in the routine `ptrelax()', the
-   * increments which are returned are often unreasonably large
-   * (e.g. when the vertex is far from equilibrium) although they tend
-   * to point in the right direction.  Therefore, we limit the size of
-   * the increments here...
-   *
-   * In particular, `vvrate' is the usual rate of damping of a vertex
-   * increment.  Additionally, an absolute upper limit to the increment
-   * size is imposed by the subroutine `dvlimit()'.
-   * 
-   * Note that three-sided Plateau borders get special treatment.  There
-   * are two rates of damping used -- `vrate', gentle damping, for the
-   * motion of the centre of mass of the 3-border; and `vvrate', strong
-   * damping, used for the relative motion of the vertices within the
-   * 3-border.  This allows networks with small 3-sided Plateau borders
-   * to equilibrate more rapidly.
-   */
-  for (ii=0; ii<nv; ii++) {
-    i=vlist[ii];
-    if (!found[b=cadj[i][0]]) {
-      found[b]=TRUE;
-      if (nbsides[b]>3) {
-        dvx[i] *= vvrate; dvy[i] *= vvrate;
-        dvlimit(maxdvv,i,dvx,dvy);
-      }
-      else {  /* 3-sided borders get special treatment! */
-        /* Essentially, the average motion of the 3-border is damped */
-        /* by 'vrate',  while the distortion of the 3-border is */
-        /* damped by 'vvrate'. */
-        i1=vnbr[i][1]; i2=vnbr[i][2];
-        dx=(dvx[i]+dvx[i1]+dvx[i2])/3.0;
-        dy=(dvy[i]+dvy[i1]+dvy[i2])/3.0;
-        dvx[i] -= dx; dvx[i1] -= dx; dvx[i2] -= dx;
-        dvy[i] -= dy; dvy[i1] -= dy; dvy[i2] -= dy;
-        dx *= vrate; dy *= vrate;
-        lim=maxdv;
-        if (fabs(dx)>fabs(dy)) {
-          if (fabs(dx)>lim) {
-            dx = fsign(dx)*lim;
-            dy *= lim/fabs(dx);
-          }
-        }
-        else {
-          if (fabs(dy)>lim) {
-            dx *= lim/fabs(dy);
-            dy = fsign(dy)*lim;
-          }
-        }
-        dvx[i] *= vrate; dvx[i1] *= vrate; dvx[i2] *= vrate;
-        dvy[i] *= vrate; dvy[i1] *= vrate; dvy[i2] *= vrate;
-        dvlimit(maxdvv,i,dvx,dvy);
-        dvx[i] += dx; dvx[i1] += dx; dvx[i2] += dx;
-        dvy[i] += dy; dvy[i1] += dy; dvy[i2] += dy;
-      }
-    }
-  }
+         if (adjustflag) { vrate=1.0; vvrate=1.0; }
+         else if (foamlike) { vrate=0.5*svdamp; vvrate=0.5*svvdamp; }
+         else { vrate = vvrate = 0.5*svvdamp; }
+         /* the factor of 0.5 anticipates the fact that the increments */
+         /* tend to overshoot */
+         /*
+          * Calculate the convergence criterion `sup'...
+          * (which is the largest suggested increment to a vertex)
+          */
+         for (ii=0; ii<nv; ii++) {
+           i=vlist[ii];
+           sup= (sup>fabs(dvx[i])) ? sup : fabs(dvx[i]);
+           sup= (sup>fabs(dvy[i])) ? sup : fabs(dvy[i]);
+         }
+         if (adjustflag) goto ADJUST1;
+         for (i=0; i<onb; i++) found[i]=FALSE;
+         /*
+          * Turn the suggested increments (dvx[], dvy[]) into reasonable
+          * sized increments.  As was noted in the routine `ptrelax()', the
+          * increments which are returned are often unreasonably large
+          * (e.g. when the vertex is far from equilibrium) although they tend
+          * to point in the right direction.  Therefore, we limit the size of
+          * the increments here...
+          *
+          * In particular, `vvrate' is the usual rate of damping of a vertex
+          * increment.  Additionally, an absolute upper limit to the increment
+          * size is imposed by the subroutine `dvlimit()'.
+          *
+          * Note that three-sided Plateau borders get special treatment.  There
+          * are two rates of damping used -- `vrate', gentle damping, for the
+          * motion of the centre of mass of the 3-border; and `vvrate', strong
+          * damping, used for the relative motion of the vertices within the
+          * 3-border.  This allows networks with small 3-sided Plateau borders
+          * to equilibrate more rapidly.
+          */
+         for (ii=0; ii<nv; ii++) {
+           i=vlist[ii];
+           if (!found[b=cadj[i][0]]) {
+             found[b]=TRUE;
+             if (nbsides[b]>3) {
+               dvx[i] *= vvrate; dvy[i] *= vvrate;
+               dvlimit(maxdvv,i,dvx,dvy);
+             }
+             else {  /* 3-sided borders get special treatment! */
+               /* Essentially, the average motion of the 3-border is damped */
+               /* by 'vrate',  while the distortion of the 3-border is */
+               /* damped by 'vvrate'. */
+               i1=vnbr[i][1]; i2=vnbr[i][2];
+               dx=(dvx[i]+dvx[i1]+dvx[i2])/3.0;
+               dy=(dvy[i]+dvy[i1]+dvy[i2])/3.0;
+               dvx[i] -= dx; dvx[i1] -= dx; dvx[i2] -= dx;
+               dvy[i] -= dy; dvy[i1] -= dy; dvy[i2] -= dy;
+               dx *= vrate; dy *= vrate;
+               lim=maxdv;
+               if (fabs(dx)>fabs(dy)) {
+                 if (fabs(dx)>lim) {
+                   dx = fsign(dx)*lim;
+                   dy *= lim/fabs(dx);
+                 }
+               }
+               else {
+                 if (fabs(dy)>lim) {
+                   dx *= lim/fabs(dy);
+                   dy = fsign(dy)*lim;
+                 }
+               }
+               dvx[i] *= vrate; dvx[i1] *= vrate; dvx[i2] *= vrate;
+               dvy[i] *= vrate; dvy[i1] *= vrate; dvy[i2] *= vrate;
+               dvlimit(maxdvv,i,dvx,dvy);
+               dvx[i] += dx; dvx[i1] += dx; dvx[i2] += dx;
+               dvy[i] += dy; dvy[i1] += dy; dvy[i2] += dy;
+             }
+           }
+         }
 #ifndef BACKGROUND
-  if (sup>0.2) {
-    /* printf("warning: very large increment occurred\n"); */
-  }
+         if (sup>0.2) {
+           /* printf("warning: very large increment occurred\n"); */
+         }
 #endif
 ADJUST1 : ;
-  /*
-   * Now calculate a suitable increment for the vertices of a one-sided cell.
-   * They are moved more or less in parallel to the their neighbouring
-   * vertices (ensuring that the one-sided cell remains attatched to its
-   * neighbour).
-   */
-  for (ii=0; ii<nv; ii++) {
-    i=vlist[ii];
-    if (ncsides[cadj[i][1]]==1) {
-      j=vnbr[i][0]; i1=vnbr[i][1]; j1=vnbr[j][2];
-      x1=vx[i]; y1=vy[i]; vnbrxy(i,1,&x11,&y11);
-      vnbrxy(i,0,&x2,&y2);
-      k=perconcat(vper[i][0],vper[j][2]);
-      trans(vx[j1],vy[j1],k,&x22,&y22);
-      dx=dvx[j1]-dvx[i1]; dy=dvy[j1]-dvy[i1];
-      dvx[i]=dvx[j]=dvx[i1]; dvy[i]=dvy[j]=dvy[i1];
-      d=linlen(x11,y11,x22,y22); d1=linlen(x11,y11,x1,y1);
-      f=d1/d;
-      dvx[i] += f*dx; dvy[i] += f*dy;
-      d1=linlen(x11,y11,x2,y2);
-      f=d1/d;
-      dvx[j] += f*dx; dvy[j] += f*dy;
-    }
-  }
-  /*
-   * Now test for lost edges
-   */
-  nel=0;
-  for (ii=0; ii<nv; ii++) {
-    i=vlist[ii];
-    j=vnbr[i][0];
-    if (j>i) {
-      /* avoids double counting */
-      x1=vx[i]; y1=vy[i]; vnbrxy(i,0,&x2,&y2);
-      if (elost(x2-x1,y2-y1,dvx[j]-dvx[i],dvy[j]-dvy[i])) {
-        /*
-	 * Add it to the list of cell edges to be deleted...
-	 */
-        iel[nel]=i; nel++;
-      }
-    }
-  }
-  /*
-   * At last!  Add the increments to the vertices...
-   */
-  for (ii=0; ii<nv; ii++) {
-    i=vlist[ii];
-    /* takes care of some knotty eventualities, even calling itself. */
-    vincrement(i,dvx[i],dvy[i]);
-  }
-  /*
-   * Loop over all Plateau borders, calling routine `bpinch()' for each
-   * one.  Routine `bpinch()' tests for the second kind of topological
-   * change, where two arcs of a Plateau border `pinch' together, thus
-   * splitting off a piece of the Plateau border.
-   */
-  if (!notopol) {
-    for (b=0; b<onb; b++) found[b]=FALSE;
-    for (ii=0; ii<nv; ii++) {
-      i=vlist[ii];
-      b=cadj[i][0];
-      if (!found[b]) {
-        found[b]=TRUE;
-        if (nbsides[b]>3) bpinch(i);
-      }
-    }
-  }
-  /*
-   * Now implement the lost edges.
-   * NB: a maximum of one edge adjacent to a given cell is lost,
-   * since this aids stability
-   */
-  if (!notopol) {
-    for (i=0; i<onc; i++) found[i]=FALSE;
-    for (ii=0; ii<nel; ii++) {
-      i=iel[ii];
-      if (!found[cadj[i][1]] && !found[cadj[i][2]]) {
-        found[cadj[i][1]]=TRUE; found[cadj[i][2]]=TRUE;
-        elose(i);
-      }
-    }
-  }
-  /*
-   * Now recalculate the cell areas and calculate the network energy
-   * by adding up the total perimeter length of the froth...
-   */
-  maxdafrac=0.0; netenergy=0.0; minenergy=0.0;
-  for (i=0; i<onc; i++) found[i]=FALSE;
-  for (ii=0; ii<nv; ii++) {
-    i=vlist[ii];
-    for (k=1; k<3; k++) {
-      if (!found[c1=cadj[i][k]]) {
-        found[c1]=TRUE;
-        careaperim(i,k,TRUE,TRUE,FALSE,&ca,&cl,&xc,&yc,&arcbrk);
-        if (arcbrk) {
-          cellpop(i,k,delp2); careaperim(i,k,TRUE,TRUE,FALSE,&ca,&cl,&xc,&yc,&arcbrk);
-        }
-        netenergy += cl;
-        da1=ca-carea[c1];
-        carea[c1] += da1; darea[c1] -= da1;
-				minenergy += 2.0*sqrt(M_PI*carea[c1]);
-        maxdafrac= (maxdafrac>(f=fabs(darea[c1]/carea[c1]))) ? maxdafrac : f;
-      }
-    }
-  }
-  return sup;
+          /*
+           * Now calculate a suitable increment for the vertices of a one-sided cell.
+           * They are moved more or less in parallel to the their neighbouring
+           * vertices (ensuring that the one-sided cell remains attatched to its
+           * neighbour).
+           */
+          for (ii=0; ii<nv; ii++) {
+            i=vlist[ii];
+            if (ncsides[cadj[i][1]]==1) {
+              j=vnbr[i][0]; i1=vnbr[i][1]; j1=vnbr[j][2];
+              x1=vx[i]; y1=vy[i]; vnbrxy(i,1,&x11,&y11);
+              vnbrxy(i,0,&x2,&y2);
+              k=perconcat(vper[i][0],vper[j][2]);
+              trans(vx[j1],vy[j1],k,&x22,&y22);
+              dx=dvx[j1]-dvx[i1]; dy=dvy[j1]-dvy[i1];
+              dvx[i]=dvx[j]=dvx[i1]; dvy[i]=dvy[j]=dvy[i1];
+              d=linlen(x11,y11,x22,y22); d1=linlen(x11,y11,x1,y1);
+              f=d1/d;
+              dvx[i] += f*dx; dvy[i] += f*dy;
+              d1=linlen(x11,y11,x2,y2);
+              f=d1/d;
+              dvx[j] += f*dx; dvy[j] += f*dy;
+            }
+          }
+          /*
+           * Now test for lost edges
+           */
+          nel=0;
+          for (ii=0; ii<nv; ii++) {
+            i=vlist[ii];
+            j=vnbr[i][0];
+            if (j>i) {
+              /* avoids double counting */
+              x1=vx[i]; y1=vy[i]; vnbrxy(i,0,&x2,&y2);
+              if (elost(x2-x1,y2-y1,dvx[j]-dvx[i],dvy[j]-dvy[i])) {
+                /*
+                 * Add it to the list of cell edges to be deleted...
+                 */
+                iel[nel]=i; nel++;
+              }
+            }
+          }
+          /*
+           * At last!  Add the increments to the vertices...
+           */
+          for (ii=0; ii<nv; ii++) {
+            i=vlist[ii];
+            /* takes care of some knotty eventualities, even calling itself. */
+            vincrement(i,dvx[i],dvy[i]);
+          }
+          /*
+           * Loop over all Plateau borders, calling routine `bpinch()' for each
+           * one.  Routine `bpinch()' tests for the second kind of topological
+           * change, where two arcs of a Plateau border `pinch' together, thus
+           * splitting off a piece of the Plateau border.
+           */
+          if (!notopol) {
+            for (b=0; b<onb; b++) found[b]=FALSE;
+            for (ii=0; ii<nv; ii++) {
+              i=vlist[ii];
+              b=cadj[i][0];
+              if (!found[b]) {
+                found[b]=TRUE;
+                if (nbsides[b]>3) bpinch(i);
+              }
+            }
+          }
+          /*
+           * Now implement the lost edges.
+           * NB: a maximum of one edge adjacent to a given cell is lost,
+           * since this aids stability
+           */
+          if (!notopol) {
+            for (i=0; i<onc; i++) found[i]=FALSE;
+            for (ii=0; ii<nel; ii++) {
+              i=iel[ii];
+              if (!found[cadj[i][1]] && !found[cadj[i][2]]) {
+                found[cadj[i][1]]=TRUE; found[cadj[i][2]]=TRUE;
+                elose(i);
+              }
+            }
+          }
+          /*
+           * Now recalculate the cell areas and calculate the network energy
+           * by adding up the total perimeter length of the froth...
+           */
+          maxdafrac=0.0; netenergy=0.0; minenergy=0.0;
+          for (i=0; i<onc; i++) found[i]=FALSE;
+          for (ii=0; ii<nv; ii++) {
+            i=vlist[ii];
+            for (k=1; k<3; k++) {
+              if (!found[c1=cadj[i][k]]) {
+                found[c1]=TRUE;
+                careaperim(i,k,TRUE,TRUE,FALSE,&ca,&cl,&xc,&yc,&arcbrk);
+                if (arcbrk) {
+                  cellpop(i,k,delp2); careaperim(i,k,TRUE,TRUE,FALSE,&ca,&cl,&xc,&yc,&arcbrk);
+                }
+                netenergy += cl;
+                da1=ca-carea[c1];
+                carea[c1] += da1; darea[c1] -= da1;
+                minenergy += 2.0*sqrt(M_PI*carea[c1]);
+                maxdafrac= (maxdafrac>(f=fabs(darea[c1]/carea[c1]))) ? maxdafrac : f;
+              }
+            }
+          }
+          return sup;
 }
 
 /*****************************************************************************
@@ -761,8 +761,8 @@ ADJUST1 : ;
  *
  *****************************************************************************/
 void dvlimit(lim,i,dvx,dvy)
-short i;
-REAL lim, dvx[], dvy[];
+  short i;
+  REAL lim, dvx[], dvy[];
 {
   short j, je;
   REAL sup, m, f, fsign();
@@ -809,7 +809,7 @@ REAL lim, dvx[], dvy[];
  *
  *****************************************************************************/
 boolean elost(rx,ry,dx,dy)
-REAL rx,ry,dx,dy;
+  REAL rx,ry,dx,dy;
 {
   REAL rr;
   REAL minvv2=0.0;
@@ -847,7 +847,7 @@ REAL rx,ry,dx,dy;
  *
  *****************************************************************************/
 void elose(k)
-short k;
+  short k;
 {
   short i, ii, j, jj, kk, i1, j1, b, b1, c1, c2, ns, iseed, iseed1, iseed2;
   REAL dx, dy, x1, y1, x2, y2, p, pb, alpha, f, d, r;
@@ -880,7 +880,7 @@ short k;
   /*
    * This is the second special case:
    *
-   * If the two Plateau borders which are about to merge are, 
+   * If the two Plateau borders which are about to merge are,
    * in fact, one and the same Plateau border it indicates that
    * the froth is about to be broken apart by this percolating
    * Plateau border.
@@ -1013,7 +1013,7 @@ short k;
   (ncsides[c1])--; (ncsides[c2])--;
   if (b!=b1) {
     /* Choose the smaller border index as the index of the new
-    co-alesced border */
+       co-alesced border */
     if (b>b1) { k=b; b=b1; b1=k; }
     nbsides[b] += nbsides[b1]-2;
     bp[b]=pb;
@@ -1065,10 +1065,10 @@ short k;
  *
  *****************************************************************************/
 void bpinch(i)
-short i;
+  short i;
 {
   /* Make a wheel around the perimeter of the border. The period indices
-  are all changed to be relative to 'i'=wheel[0][0]. */
+     are all changed to be relative to 'i'=wheel[0][0]. */
   short b, b1, bb, bi, bj, i1, j, j1, ii, ii1, jj, jj1, k, kk, kk1, c1, c2, je,
         l, m, maxl;
   short nwh, wheel[MWHEEL][2], perconcat(), vgetindex(), bgetindex(),
@@ -1129,7 +1129,7 @@ short i;
       /*
        * Test whether the angle of the first arc intersects the line
        * joining the centres of the two arcs (this being a necessary
-       * but not a sufficient condition for the pinching of the 
+       * but not a sufficient condition for the pinching of the
        * two arcs).
        * The form of this test relies on the fact that the order of
        * points around the wheel is anti-clockwise.
@@ -1148,18 +1148,18 @@ short i;
         if (twopimod(th-th1)<alpha2) {
           la22= (twopimod(alpha2+th1-th)>PI);
           la11= (twopimod(th-th1)>PI);
-	  /*
-	   * Rule out the (perhaps remote) possibility that the
-	   * Plateau border is twisted around so that both arcs
-	   * are pointing in the same direction.
-	   */
+          /*
+           * Rule out the (perhaps remote) possibility that the
+           * Plateau border is twisted around so that both arcs
+           * are pointing in the same direction.
+           */
           if (quadarea(x1,y1,x11,y11,x2,y2,x21,y21) > 0.0) {
-	    /*
-	     * Having already checked that both arcs intersect the
-	     * line joining the centres of the arcs, it is sufficient
-	     * to show that the sum of the arc radii is larger than
-	     * the distance between arc centres.
-	     */
+            /*
+             * Having already checked that both arcs intersect the
+             * line joining the centres of the arcs, it is sufficient
+             * to show that the sum of the arc radii is larger than
+             * the distance between arc centres.
+             */
             r=linlen(xc1,yc1,xc2,yc2);
             if (!straight1) {
               if (!straight2) {
@@ -1167,12 +1167,12 @@ short i;
                 r1=BRADIUS(p1,pb); r2=BRADIUS(p2,pb);
                 if ((r1+r2)+filmwid>r) {
                   flag=TRUE;
-		  /*
-		   * `f' tells you where the pinching arcs touch
-		   * or, more realistically, half way between where
-		   * the two arcs overlap -- expressed as a fraction
-		   * of the vector (xc2-xc1, yc2-yc1).
-		   */
+                  /*
+                   * `f' tells you where the pinching arcs touch
+                   * or, more realistically, half way between where
+                   * the two arcs overlap -- expressed as a fraction
+                   * of the vector (xc2-xc1, yc2-yc1).
+                   */
                   f=r1+(r-(r1+r2))/2.0; f /= r;
                 }
               }
@@ -1202,13 +1202,13 @@ short i;
           if (flag) {   /* pinch found */
             bpinchcount++;
             /*
-	     * First enact the topological change and
-	     * fix the endpoints of the new edge.
-	     */
+             * First enact the topological change and
+             * fix the endpoints of the new edge.
+             */
             k=vgetindex();
             kk=vgetindex();
             b1=bgetindex();
-	    /* (xc1+dx, yc1+dx) is where the arcs touch */
+            /* (xc1+dx, yc1+dx) is where the arcs touch */
             dx=f*(xc2-xc1); dy=f*(yc2-yc1);
             d=sqrt(dx*dx+dy*dy);
             vx[k]=xc1+dx-5.0*minvvlen*dy/d;
@@ -1224,19 +1224,19 @@ short i;
             cadj[k][0]=b; cadj[k][1]=c1; cadj[k][2]=c2;
             cadj[kk][0]=b1; cadj[kk][1]=c2; cadj[kk][2]=c1;
             /*
-	     * Since `b1' is a newly created Plateau border, it
-	     * is necessary to tell all the points on its perimeter
-	     * about its existence.
-	     */
+             * Since `b1' is a newly created Plateau border, it
+             * is necessary to tell all the points on its perimeter
+             * about its existence.
+             */
             bj=je=kk;
             do { cadj[bj][0]=b1; bj=vnbr[bj][1];
             } while (bj!=je);
             /*
-	     * Now update the array 'vper', noting that the periodic
+             * Now update the array 'vper', noting that the periodic
              * indices i1,j1,ii1,jj1 were defined so that they translate
-	     * their points into the vicinity of the first point on the
-	     * wheel (wheel[0][0]).
-	     */
+             * their points into the vicinity of the first point on the
+             * wheel (wheel[0][0]).
+             */
             vper[k][0]=0; vper[k][1]=jj1 & PERMASK; vper[k][2]=i1 & PERMASK;
             setlarc(&vper[k][1],la11); setlarc(&vper[k][2],la12);
             vper[kk][0]=0; vper[kk][1]=ii1 & PERMASK; vper[kk][2]=j1 & PERMASK;
@@ -1252,9 +1252,9 @@ short i;
             /* This clinches the correct values of vper for 'k', 'kk'
              * and their nbring vertices */
             putinbox(k); putinbox(kk);
-	    /*
-	     * Now update the remaining network information...
-	     */
+            /*
+             * Now update the remaining network information...
+             */
             nbsides[b]=bsides(b); nbsides[b1]=bsides(b1);
             (ncsides[c1])++; (ncsides[c2])++;
             bp[b1]=pb;
@@ -1262,10 +1262,10 @@ short i;
             oba=barea[b];
             ba=bordarea(k,&arcbrk); ba1=bordarea(kk,&arcbrk);
             barea[b]=oba*(ba/(ba+ba1)); barea[b1]=oba*(ba1/(ba+ba1));
-	    /*
-	     * Call `bpinch()' recursively on each of the newly created
-	     * Plateau borders.
-	     */
+            /*
+             * Call `bpinch()' recursively on each of the newly created
+             * Plateau borders.
+             */
             if (nbsides[b]>3) bpinch(k);
             if (b1<b && nbsides[b1]>3) bpinch(kk);
             return;
@@ -1303,13 +1303,13 @@ short i;
  *
  *****************************************************************************/
 boolean vincrement(i,dx,dy)
-short i;
-REAL dx,dy;
+  short i;
+  REAL dx,dy;
 {
   short j, j1, jj, jj1, ii, k, kk, c, cc;
   REAL x1, y1, x11, y11, x12, y12, d, dd, r, rr, dx1, dy1, f, th, dxx, dyy,
        ta, tb, tc, pb;
-  REAL linlen(); 
+  REAL linlen();
   void setlarc(), trans(), putinbox(), vnbrxy();
   boolean la, found, larc(), vincrement();
   if (dx==0.0 && dy==0.0) return TRUE;
@@ -1348,51 +1348,51 @@ REAL dx,dy;
        * which limits the largest size of arc.
        */
       if (d>(ta=2.0*r*cosminang)) {
-	/*
-	 * If the arc is ``broken'' then the first possible remedy is to
-	 * give the neighbouring point the increment which is due to
-	 * it in any case from (dvx[j], dvy[j]).
-	 */
+        /*
+         * If the arc is ``broken'' then the first possible remedy is to
+         * give the neighbouring point the increment which is due to
+         * it in any case from (dvx[j], dvy[j]).
+         */
         if (vincrement(j,dvx[j],dvy[j])) {
           vnbrxy(i,k,&x11,&y11);
           d=linlen(x1,y1,x11,y11);
         }
         if (d>(ta=2.0*r*cosminang)) {
-	  /*
-	   * If that didn't work then we reach here.  The ultimate
-	   * solution (not very elegant but it works) is to move
-	   * vertex `i' just a little bit closer to its neighbour.
-	   */
+          /*
+           * If that didn't work then we reach here.  The ultimate
+           * solution (not very elegant but it works) is to move
+           * vertex `i' just a little bit closer to its neighbour.
+           */
           f=1.0-2.0*r*cosminang/d; f *= 1.1;
           dx1=f*(x11-x1); dy1=f*(y11-y1);
           vx[i] += dx1; vy[i] += dy1;
           /*
-	   * Now check whether the other border arc is now out of place
-	   */
+           * Now check whether the other border arc is now out of place
+           */
           jj=vnbr[i][kk]; jj1=vper[i][kk];
           trans(vx[jj],vy[jj],jj1,&x12,&y12);
           dd=linlen(x1,y1,x12,y12);
           cc=cadj[i][k]; rr=BRADIUS(cp[cc],pb);
           if (dd>(tb=2.0*rr*cosminang)) {
-	    /*
-	     * If the arc is ``broken'' then the first possible remedy is to
-	     * give the neighbouring point the increment which is due to
-	     * it in any case from (dvx[jj], dvy[jj]).
-	     */
+            /*
+             * If the arc is ``broken'' then the first possible remedy is to
+             * give the neighbouring point the increment which is due to
+             * it in any case from (dvx[jj], dvy[jj]).
+             */
             if (vincrement(jj,dvx[jj],dvy[jj])) {
               vnbrxy(i,kk,&x12,&y12);
               dd=linlen(x1,y1,x12,y12);
             }
             if (dd>(tb=2.0*rr*cosminang)) {
-	      /*
-	       * If that didn't work then we reach here.  The solution
-	       * here is a little bit trickier than last time because
-	       * in fixing *this* arc, we don't want to end up
-	       * breaking the previous one:
-	       *
+              /*
+               * If that didn't work then we reach here.  The solution
+               * here is a little bit trickier than last time because
+               * in fixing *this* arc, we don't want to end up
+               * breaking the previous one:
+               *
                * The point 'i' is moved to the apex of a triangle of
                * side lengths 'ta' and 'tb'
-	       */
+               */
               tc=linlen(x11,y11,x12,y12);
               dxx=(x12-x11)/tc; dyy=(y12-y11)/tc;
               th=acos((ta*ta+tc*tc-tb*tb)/(2.0*ta*tc));
@@ -1435,7 +1435,7 @@ REAL dx,dy;
  *
  *****************************************************************************/
 void hencky(eps)
-REAL eps;
+  REAL eps;
 {
   short ii, i, j, k, c;
   boolean found[MCELL], vincrement(), arcbrk;

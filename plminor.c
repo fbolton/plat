@@ -44,7 +44,7 @@
  *
  *****************************************************************************/
 void vororder(i1, j1, ko)
-short i1, j1, *ko;
+  short i1, j1, *ko;
 {
   short kx, ky, k1, k2, k3, jo[9], kk[9], d[9], d1, d2;
   /*
@@ -112,7 +112,7 @@ short i1, j1, *ko;
  *
  *****************************************************************************/
 boolean tricen(x1, y1, x2, y2, x3, y3, xc, yc)
-REAL x1, y1, x2, y2, x3, y3, *xc, *yc;
+  REAL x1, y1, x2, y2, x3, y3, *xc, *yc;
 {
   REAL x12, y12, x23, y23, m12, m23;
   void plerror();
@@ -164,8 +164,8 @@ REAL x1, y1, x2, y2, x3, y3, *xc, *yc;
  *
  *****************************************************************************/
 void ptbox(xc, yc, i3, j3, k3)
-REAL *xc, *yc;
-short *i3, *j3, *k3;
+  REAL *xc, *yc;
+  short *i3, *j3, *k3;
 {
   if (*xc< -boxwid/2.0) {
     *xc += boxwid;
@@ -205,7 +205,7 @@ short *i3, *j3, *k3;
  *
  *****************************************************************************/
 boolean inbox(i, i1)
-short i, i1;
+  short i, i1;
 {
   REAL x, y;
   x=cx[i]+boxwid*PERX(i1); y=cy[i]+boxhgt*PERY(i1);
@@ -231,7 +231,8 @@ short i, i1;
  *
  *****************************************************************************/
 REAL sqf(x)
-REAL x; { return (x*x); }
+  REAL x;
+{ return (x*x); }
 
 /*****************************************************************************
  ***     * *    * *      * *                          * *    * *    * *    ***
@@ -362,7 +363,7 @@ void normalizeba()
  *
  *****************************************************************************/
 void putinbox(i)
-short i;
+  short i;
 {
   REAL xlim, ylim, x, y;
   short j, k, k1;
@@ -431,8 +432,8 @@ short i;
  *
  *****************************************************************************/
 void trans(x, y, per, x1, y1)
-short per;
-REAL x, y, *x1, *y1;
+  short per;
+  REAL x, y, *x1, *y1;
 {
   *x1=x+boxwid*PERX(per);
   *y1=y+boxhgt*PERY(per);
@@ -473,8 +474,8 @@ REAL x, y, *x1, *y1;
  *
  *****************************************************************************/
 void vnbrxy(i, k, x1, y1)
-short i, k;
-REAL *x1, *y1;
+  short i, k;
+  REAL *x1, *y1;
 {
   short j;
   j=vnbr[i][k];
@@ -507,7 +508,7 @@ REAL *x1, *y1;
  *
  *****************************************************************************/
 void vortrans(x, y, xc, yc, x1, y1)
-REAL x, y, xc, yc, *x1, *y1;
+  REAL x, y, xc, yc, *x1, *y1;
 {
   REAL d, fsign();
   *x1=x;
@@ -530,7 +531,7 @@ REAL x, y, xc, yc, *x1, *y1;
  *
  *****************************************************************************/
 REAL fsign(x)
-REAL x;
+  REAL x;
 { return ((x>0) ? 1.0 : -1.0); }
 
 /*****************************************************************************
@@ -562,8 +563,8 @@ REAL x;
  *
  *****************************************************************************/
 void vorvnbrxy(i, k, x1, y1)
-short i, k;
-REAL *x1, *y1;
+  short i, k;
+  REAL *x1, *y1;
 {
   void trans();
   trans(vx[vorvnbr[i][k]], vy[vorvnbr[i][k]], vorvper[i][k], x1, y1);
@@ -602,7 +603,7 @@ REAL *x1, *y1;
  *
  *****************************************************************************/
 short vorkindex(i, j, j1)
-short i, j, j1;
+  short i, j, j1;
 {
   void plerror();
   short k1;
@@ -670,56 +671,56 @@ short i, j, j1;
  *
  *****************************************************************************/
 short perfn(ix,iy)
-short ix,iy;
+     short ix,iy;
 {
   return ( (iy & 0x0f)<<4 | (ix & 0x0f));
 }
 
 short perx(per)
-short per;
+  short per;
 {
   return ( (per&0x08) ? (per&0x0f)-16 : (per&0x0f) );
 }
 
 short pery(per)
-short per;
+  short per;
 {
   return ( (per&0x80) ? ((per&0xf0)>>4)-16 : (per&0xf0)>>4 );
 }
 
 short perincx(per)
-short per;
+  short per;
 {
   return ( (per & ~0x0f) | ((per & 0x0f)+1)%16 );
 }
 
 short perdecx(per)
-short per;
+  short per;
 {
   return ( (per & ~0x0f) | ((per & 0x0f)+15)%16 );
 }
 
 short perincy(per)
-short per;
+  short per;
 {
   return ( (per & ~0xf0) | (((per & 0xf0)+0x10) & 0xf0) );
 }
 
 short perdecy(per)
-short per;
+  short per;
 {
   return ( (per & ~0xf0) | (((per & 0xf0)+0xf0) & 0xf0) );
 }
 
 boolean larc(i, k)
-short i, k;
+  short i, k;
 {
   return (boolean) (vper[i][k] & LARC)>>8;
 }
 
 void setlarc(i1, la)
-short *i1;
-boolean la;
+  short *i1;
+  boolean la;
 { *i1=(*i1 & PERMASK) | ((la) ? LARC : 0x00); }
 
 /*****************************************************************************
@@ -795,7 +796,7 @@ short bgetindex()
 }
 
 void vforgetindex(i)
-short i;
+  short i;
 {
   void plerror();
   short ii, kk;
@@ -811,7 +812,7 @@ short i;
 }
 
 void cforgetindex(i)
-short i;
+  short i;
 {
   void plerror();
   short ii, kk;
@@ -827,7 +828,7 @@ short i;
 }
 
 void bforgetindex(i)
-short i;
+  short i;
 {
   void plerror();
   short ii, kk;
@@ -860,7 +861,7 @@ short i;
  *
  *****************************************************************************/
 void bubinbox(xc, yc)
-REAL *xc, *yc;
+  REAL *xc, *yc;
 {
   REAL halfwid, halfhgt;
   REAL fsign();
@@ -889,7 +890,7 @@ REAL *xc, *yc;
  *
  *****************************************************************************/
 short perconcat(i1, j1)
-short i1, j1;
+  short i1, j1;
 {
   short ix, iy, jx, jy;
   ix=PERX(i1); iy=PERY(i1);
@@ -914,7 +915,7 @@ short i1, j1;
  *
  *****************************************************************************/
 REAL pimod(a)
-REAL a;
+  REAL a;
 {
   while (fabs(a)>PI) a -= 2.0*PI*( (a>0.0) ? 1.0 : -1.0);
   return a;
@@ -937,7 +938,7 @@ REAL a;
  *
  *****************************************************************************/
 REAL twopimod(a)
-REAL a;
+  REAL a;
 {
   boolean lt=FALSE, gt=FALSE;
   REAL pi2;
@@ -962,7 +963,7 @@ REAL a;
  *
  *****************************************************************************/
 REAL linlen(x1, y1, x2, y2)
-REAL x1, y1, x2, y2;
+  REAL x1, y1, x2, y2;
 {
   return (sqrt(((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2))) );
 }
@@ -981,7 +982,7 @@ REAL x1, y1, x2, y2;
  *
  *****************************************************************************/
 REAL linlen2(x1, y1, x2, y2)
-REAL x1, y1, x2, y2;
+  REAL x1, y1, x2, y2;
 {
   return((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2));
 }
@@ -1008,7 +1009,7 @@ REAL x1, y1, x2, y2;
  *
  *****************************************************************************/
 REAL carcangle(x1, y1, x2, y2, p1, p2)
-REAL x1, y1, x2, y2, p1, p2;
+  REAL x1, y1, x2, y2, p1, p2;
 {
   void plerror();
   REAL dp, x, linlen();
@@ -1039,7 +1040,7 @@ REAL x1, y1, x2, y2, p1, p2;
  *
  *****************************************************************************/
 REAL carclen(x1, y1, x2, y2, p1, p2)
-REAL x1, y1, x2, y2, p1, p2;
+  REAL x1, y1, x2, y2, p1, p2;
 {
   REAL dp, linlen(), carcangle();
   if (fabs(dp=p1-p2)<MPRECISION)
@@ -1090,8 +1091,8 @@ REAL x1, y1, x2, y2, p1, p2;
  *
  *****************************************************************************/
 REAL barcangle(x1, y1, x2, y2, p1, p2, la, arcbrk)
-REAL x1, y1, x2, y2, p1, p2;
-boolean la, *arcbrk;
+  REAL x1, y1, x2, y2, p1, p2;
+  boolean la, *arcbrk;
 {
   REAL dp, x, linlen(), fsign();
   void plerror();
@@ -1135,8 +1136,8 @@ boolean la, *arcbrk;
  *
  *****************************************************************************/
 REAL barclen(x1, y1, x2, y2, p1, p2, la, arcbrk)
-REAL x1, y1, x2, y2, p1, p2;
-boolean la, *arcbrk;
+  REAL x1, y1, x2, y2, p1, p2;
+  boolean la, *arcbrk;
 {
   REAL dp, linlen(), barcangle();
   *arcbrk=FALSE;
@@ -1161,7 +1162,7 @@ boolean la, *arcbrk;
  *
  *****************************************************************************/
 REAL gee(alpha)
-REAL alpha;
+  REAL alpha;
 {
   return(0.5*alpha/sin(0.5*alpha));
 }
@@ -1194,7 +1195,7 @@ REAL alpha;
  *
  *****************************************************************************/
 boolean arccentre(x1, y1, x2, y2, alpha, xc, yc)
-REAL x1, y1, x2, y2, alpha, *xc, *yc;
+  REAL x1, y1, x2, y2, alpha, *xc, *yc;
 {
   REAL dx, dy, t;
   if (fabs(alpha)<0.05) {
@@ -1228,7 +1229,7 @@ REAL x1, y1, x2, y2, alpha, *xc, *yc;
  *
  *****************************************************************************/
 REAL triarea(x1, y1, x2, y2, x3, y3)
-REAL x1, y1, x2, y2, x3, y3;
+  REAL x1, y1, x2, y2, x3, y3;
 {
   x2 -= x1; y2 -= y1; x3 -= x1; y3 -= y1;
   return(0.5*(x2*y3-x3*y2));
@@ -1254,7 +1255,7 @@ REAL x1, y1, x2, y2, x3, y3;
  *
  *****************************************************************************/
 REAL quadarea(x1, y1, x2, y2, x3, y3, x4, y4)
-REAL x1, y1, x2, y2, x3, y3, x4, y4;
+  REAL x1, y1, x2, y2, x3, y3, x4, y4;
 {
   REAL triarea();
   return(triarea(x1,y1,x2,y2,x3,y3)+triarea(x1,y1,x3,y3,x4,y4));
@@ -1278,7 +1279,7 @@ REAL x1, y1, x2, y2, x3, y3, x4, y4;
  *
  *****************************************************************************/
 REAL carcarea(alpha, p1, p2)
-REAL alpha, p1, p2;
+  REAL alpha, p1, p2;
 {
   REAL dp, r;
   if (fabs(dp=p1-p2)<MPRECISION)
@@ -1307,7 +1308,7 @@ REAL alpha, p1, p2;
  *
  *****************************************************************************/
 REAL barcarea(alpha, p1, p2)
-REAL alpha, p1, p2;
+  REAL alpha, p1, p2;
 {
   REAL dp, r;
   if (fabs(dp=p1-p2)<MPRECISION)
@@ -1338,19 +1339,19 @@ REAL alpha, p1, p2;
  *
  *****************************************************************************/
 void arccentroid(x1, y1, x2, y2, r, alpha, xc, yc)
-REAL x1, y1, x2, y2, r, alpha;
-REAL *xc, *yc;
+  REAL x1, y1, x2, y2, r, alpha;
+  REAL *xc, *yc;
 {
-	REAL linangle();
-	REAL theta = twopimod(linangle(x1,y1,x2,y2) + M_PI_2);
-	arccentre(x1, y1, x2, y2, alpha, xc, yc);
-	REAL openingAngle = fabs(alpha) * 0.5;
-	REAL rcentroid = 4 * r * sin(openingAngle) * sin(openingAngle) * sin(openingAngle) / (3 * (2 * openingAngle - sin(2 * openingAngle)));
-	if( alpha < 0){
-		theta = twopimod(theta + M_PI);
-	}
-	*xc += rcentroid * cos(theta);
-	*yc += rcentroid * sin(theta);
+  REAL linangle();
+  REAL theta = twopimod(linangle(x1,y1,x2,y2) + M_PI_2);
+  arccentre(x1, y1, x2, y2, alpha, xc, yc);
+  REAL openingAngle = fabs(alpha) * 0.5;
+  REAL rcentroid = 4 * r * sin(openingAngle) * sin(openingAngle) * sin(openingAngle) / (3 * (2 * openingAngle - sin(2 * openingAngle)));
+  if( alpha < 0){
+    theta = twopimod(theta + M_PI);
+  }
+  *xc += rcentroid * cos(theta);
+  *yc += rcentroid * sin(theta);
 }
 
 
@@ -1369,7 +1370,7 @@ REAL *xc, *yc;
  *
  *****************************************************************************/
 REAL linangle(x1, y1, x2, y2)
-REAL x1, y1, x2, y2;
+  REAL x1, y1, x2, y2;
 {
   REAL twopimod();
   if (fabs(x2-x1)<MPRECISION)
@@ -1402,7 +1403,7 @@ REAL x1, y1, x2, y2;
  *
  *****************************************************************************/
 REAL cangle(x1, y1, x2, y2, p1, p2)
-REAL x1, y1, x2, y2, p1, p2;
+  REAL x1, y1, x2, y2, p1, p2;
 {
   REAL carcangle(), twopimod(), x;
   x=twopimod(linangle(x1,y1,x2,y2)+0.5*carcangle(x1,y1,x2,y2,p1,p2));
@@ -1439,8 +1440,8 @@ REAL x1, y1, x2, y2, p1, p2;
  *
  *****************************************************************************/
 REAL bangle(x1, y1, x2, y2, p1, p2, la, arcbrk)
-REAL x1, y1, x2, y2, p1, p2;
-boolean la, *arcbrk;
+  REAL x1, y1, x2, y2, p1, p2;
+  boolean la, *arcbrk;
 {
   REAL barcangle(), twopimod(), x;
   *arcbrk=FALSE;
@@ -1462,7 +1463,7 @@ boolean la, *arcbrk;
  *****************************************************************************
  *
  *	Subroutine:	REAL bcangle1(REAL x1, y1, x2, y2, x3, y3, p1, p2, pb,
-				 boolean la, arcbrk)
+ boolean la, arcbrk)
  *
  *	Arguments:	(x1, y1)	= first point of border arc
  *			(x2, y2)	= second point of border arc
@@ -1496,8 +1497,8 @@ boolean la, *arcbrk;
  *
  *****************************************************************************/
 REAL bcangle1(x1, y1, x2, y2, x3, y3, p1, p2, pb, la, arcbrk)
-REAL x1, y1, x2, y2, x3, y3, p1, p2, pb;
-boolean la, *arcbrk;
+  REAL x1, y1, x2, y2, x3, y3, p1, p2, pb;
+  boolean la, *arcbrk;
 {
   REAL bangle(), cangle(), twopimod(), x;
   x=cangle(x2,y2,x3,y3,p1,p2)-bangle(x2,y2,x1,y1,pb,p1,la,arcbrk);
@@ -1511,7 +1512,7 @@ boolean la, *arcbrk;
  *****************************************************************************
  *
  *	Subroutine:	REAL bcangle2(REAL x1, y1, x2, y2, x3, y3, p1, p2, pb,
-				 boolean la, arcbrk)
+ boolean la, arcbrk)
  *
  *	Arguments:	(x1, y1)	= first point of border arc
  *			(x2, y2)	= second point of border arc
@@ -1545,8 +1546,8 @@ boolean la, *arcbrk;
  *
  *****************************************************************************/
 REAL bcangle2(x1, y1, x2, y2, x3, y3, p1, p2, pb, la, arcbrk)
-REAL x1, y1, x2, y2, x3, y3, p1, p2, pb;
-boolean la, *arcbrk;
+  REAL x1, y1, x2, y2, x3, y3, p1, p2, pb;
+  boolean la, *arcbrk;
 {
   REAL bangle(), cangle(), twopimod(), x;
   x=cangle(x2,y2,x3,y3,p2,p1)-bangle(x2,y2,x1,y1,p1,pb,la,arcbrk);
@@ -1578,8 +1579,8 @@ boolean la, *arcbrk;
  *
  *****************************************************************************/
 REAL cellarea(i,k,arcbrk)
-short i, k;
-boolean *arcbrk;
+  short i, k;
+  boolean *arcbrk;
 {
   REAL ca, cl, xc, yc;
   void careaperim();
@@ -1612,8 +1613,8 @@ boolean *arcbrk;
  *
  *****************************************************************************/
 REAL cellperim(i,k,arcbrk)
-short i, k;
-boolean *arcbrk;
+  short i, k;
+  boolean *arcbrk;
 {
   REAL ca, cl, xc, yc;
   void careaperim();
@@ -1652,14 +1653,14 @@ boolean *arcbrk;
  *
  *****************************************************************************/
 void careaperim(i, k, caflg, clflg, ccflg, ca, cl, ccx, ccy, arcbrk)
-REAL *ca, *cl, *ccx, *ccy;
-short i, k;
-boolean caflg, clflg, ccflg, *arcbrk;
+  REAL *ca, *cl, *ccx, *ccy;
+  short i, k;
+  boolean caflg, clflg, ccflg, *arcbrk;
 {
   short i1, ii, ii1, j, j1, c, perconcat();
   REAL tx, ty, p1, p2, x1, y1, x2, y2, x3, y3, xc, yc, alpha, pb, triangarea, arcarea,
-    barcangle(), carcangle(), barclen(), barcarea(), carcarea(), triarea(),
-    fsign();
+       barcangle(), carcangle(), barclen(), barcarea(), carcarea(), triarea(),
+       fsign();
   boolean la, larc();
   void trans(), arccentroid();
   *arcbrk=FALSE;
@@ -1673,64 +1674,64 @@ boolean caflg, clflg, ccflg, *arcbrk;
     x3=vx[j]+tx*boxwid; y3=vy[j]+ty*boxhgt;
     la=larc(i,2); pb=bp[cadj[i][0]];
     alpha=barcangle(x3,y3,x2,y2,p1,pb,la,arcbrk);
-		arcarea = barcarea(alpha,p1,pb);
-		if (i!=ii) {
-			triangarea = triarea(x1,y1,x2,y2,x3,y3);
-		}
+    arcarea = barcarea(alpha,p1,pb);
+    if (i!=ii) {
+      triangarea = triarea(x1,y1,x2,y2,x3,y3);
+    }
     if (*arcbrk) break;
     if (caflg || ccflg) *ca += arcarea;
     if (clflg) *cl += barclen(x3,y3,x2,y2,p1,pb,la,arcbrk);
-		if (ccflg){
-			arccentroid(x3,y3,x2,y2,BRADIUS(p1,pb),alpha,&xc,&yc);
-			*ccx += xc * arcarea;
-			*ccy += yc * arcarea;
-		}
+    if (ccflg){
+      arccentroid(x3,y3,x2,y2,BRADIUS(p1,pb),alpha,&xc,&yc);
+      *ccx += xc * arcarea;
+      *ccy += yc * arcarea;
+    }
     if (*arcbrk) break;
     if ((i!=ii) && (caflg || ccflg)) *ca += triangarea;
     if ((i!=ii) && ccflg){
-		 	*ccx += triangarea * (x1 + x2 + x3)/3.;
-		 	*ccy += triangarea * (y1 + y2 + y3)/3.;
-		}
+      *ccx += triangarea * (x1 + x2 + x3)/3.;
+      *ccy += triangarea * (y1 + y2 + y3)/3.;
+    }
     i=j; i1=j1;
     tx += PERX(vper[j][0]); ty += PERY(vper[j][0]);
     j=vnbr[j][0];
     x2=x3; y2=y3;
     x3=vx[j]+tx*boxwid; y3=vy[j]+ty*boxhgt;
-		if (i!=ii) {
-			triangarea = triarea(x1,y1,x2,y2,x3,y3);
-		}
+    if (i!=ii) {
+      triangarea = triarea(x1,y1,x2,y2,x3,y3);
+    }
     if ((j!=ii) && (caflg || ccflg)) *ca += triangarea;
     if ((i!=ii) && ccflg){
-		 	*ccx += triangarea * (x1 + x2 + x3)/3.;
-		 	*ccy += triangarea * (y1 + y2 + y3)/3.;
-		}
+      *ccx += triangarea * (x1 + x2 + x3)/3.;
+      *ccy += triangarea * (y1 + y2 + y3)/3.;
+    }
     p2=cp[cadj[i][1]];
     alpha=carcangle(x3,y3,x2,y2,p1,p2);
-		arcarea = carcarea(alpha,p1,p2);
+    arcarea = carcarea(alpha,p1,p2);
     if (caflg || ccflg) *ca += arcarea;
     if (clflg){
       *cl += carclen(x3,y3,x2,y2,p1,p2);
       forces[c][cadj[i][1]] = carclen(x3,y3,x2,y2,p1,p2);
     }
-		if (ccflg){
-			arccentroid(x3,y3,x2,y2,CRADIUS(p1,p2),alpha,&xc,&yc);
-			*ccx += xc * arcarea;
-			*ccy += yc * arcarea;
-		}
+    if (ccflg){
+      arccentroid(x3,y3,x2,y2,CRADIUS(p1,p2),alpha,&xc,&yc);
+      *ccx += xc * arcarea;
+      *ccy += yc * arcarea;
+    }
     if (j==ii) break;
     i=j; i1=j1;
     tx += PERX(vper[j][2]); ty += PERY(vper[j][2]);
     j=vnbr[j][2];
     x2=x3; y2=y3;
   } while (TRUE);
-	if (ccflg){
-		*ccx /= *ca;
-		while(*ccx >= 0.5){ *ccx -= 1.; }
-		while(*ccx < -0.5){ *ccx += 1.; }
-		*ccy /= *ca;
-		while(*ccy >= 0.5){ *ccy -= 1.; }
-		while(*ccy < -0.5){ *ccy += 1.; }
-	}
+  if (ccflg){
+    *ccx /= *ca;
+    while(*ccx >= 0.5){ *ccx -= 1.; }
+    while(*ccx < -0.5){ *ccx += 1.; }
+    *ccy /= *ca;
+    while(*ccy >= 0.5){ *ccy -= 1.; }
+    while(*ccy < -0.5){ *ccy += 1.; }
+  }
 }
 
 /*****************************************************************************
@@ -1753,12 +1754,12 @@ boolean caflg, clflg, ccflg, *arcbrk;
  *
  *****************************************************************************/
 REAL bordarea(i,arcbrk)
-short i;
-boolean *arcbrk;
+  short i;
+  boolean *arcbrk;
 {
   short i1, ii, ii1, j, j1, b, perconcat();
   REAL ba, p1, p2, x1, y1, x2, y2, x3, y3, alpha, barcangle(),
-    barclen(), barcarea(), triarea(), fsign();
+       barclen(), barcarea(), triarea(), fsign();
   boolean la, larc();
   void trans();
   *arcbrk=FALSE;
@@ -1810,7 +1811,7 @@ boolean *arcbrk;
  *
  *****************************************************************************/
 boolean perculates(i)
-short i;
+  short i;
 {
   /* This routine answers the question: if the edge adjacent to 'i' were */
   /* removed, would the resulting PB percolate? */
@@ -1832,7 +1833,7 @@ short i;
  *	Subroutine:	dcadjareas(short i, REAL dbp)
  *
  *	Arguments:	i	= index of vector lying on Plateau border
-			dbp	= increment to Plateau border pressure
+ dbp	= increment to Plateau border pressure
  *
  *	Return value:	none
  *
@@ -1847,12 +1848,12 @@ short i;
  *
  *****************************************************************************/
 void dcadjareas(i,dbp)
-short i;
-REAL dbp;
+  short i;
+  REAL dbp;
 {
   short i1, ii, ii1, j, j1, b, c, perconcat();
   REAL dca, p1, p2, x1, y1, x2, y2, x3, y3, alpha1, alpha2,
-    barcangle(), barclen(), barcarea(), triarea(), fsign();
+       barcangle(), barclen(), barcarea(), triarea(), fsign();
   boolean la, larc(), arcbrk;
   void trans(), cellpop();
   b=cadj[i][0];
@@ -1931,8 +1932,8 @@ REAL dbp;
  *
  *****************************************************************************/
 void cellpop(i, k, dptol)
-short i, k;
-REAL dptol;
+  short i, k;
+  REAL dptol;
 {
   short i1, ii, ii1, j, j1, c, perconcat();
   REAL tx, ty, p1, p2, pb, pbmin, x1, y1, x2, y2, x3, y3, alpha, d, dsup, r,
@@ -2020,8 +2021,8 @@ REAL dptol;
  *
  *****************************************************************************/
 void bordpop(i,dptol)
-short i;
-REAL dptol;
+  short i;
+  REAL dptol;
 {
   short i1, ii, ii1, j, j1, b, perconcat();
   REAL r, d, p1, p2, x1, y1, x2, y2, x3, y3, fsign();
@@ -2061,7 +2062,7 @@ REAL dptol;
  *
  *****************************************************************************/
 short bsides(b)
-short b;
+  short b;
 {
   short ii, i, nbs;
   for (ii=0; ii<nv; ii++) {
@@ -2092,18 +2093,18 @@ short b;
 void centroids()
 {
   int i, ii, k, c;
-	REAL ca, cl;
-	boolean arcbrk;
-	for(c=0;c<nc;c++){
-		for (ii=0; ii<nv; ii++) {
-			i=vlist[ii];
-			if (c==cadj[i][k=1]) break;
-			if (c==cadj[i][k=2]) break;
-		}
-		cxcent[c] = 0.;
-		cycent[c] = 0.;
-		careaperim(i,k,FALSE,FALSE,TRUE,&ca,&cl,&(cxcent[c]),&(cycent[c]),&arcbrk);
-	}
+  REAL ca, cl;
+  boolean arcbrk;
+  for(c=0;c<nc;c++){
+    for (ii=0; ii<nv; ii++) {
+      i=vlist[ii];
+      if (c==cadj[i][k=1]) break;
+      if (c==cadj[i][k=2]) break;
+    }
+    cxcent[c] = 0.;
+    cycent[c] = 0.;
+    careaperim(i,k,FALSE,FALSE,TRUE,&ca,&cl,&(cxcent[c]),&(cycent[c]),&arcbrk);
+  }
 }
 
 
@@ -2125,7 +2126,7 @@ void centroids()
  *
  *****************************************************************************/
 short csides(c)
-short c;
+  short c;
 {
   short i, ii, k, ncs;
   for (ii=0; ii<nv; ii++) {
@@ -2164,7 +2165,7 @@ short c;
  *
  *****************************************************************************/
 REAL ran3(idum)
-int idum;
+  int idum;
 {
   static int inext,inextp;
   static long ma[56];
@@ -2222,7 +2223,7 @@ int idum;
  *
  *****************************************************************************/
 void plerror(s)
-char *s;
+  char *s;
 {
   fprintf(stderr,"plateau: %s\n", s);
   fflush(stderr);

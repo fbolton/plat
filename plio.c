@@ -564,6 +564,7 @@ void infowrite()
         }
       }
       else if (strcmp(info_tok[i],"netenergy")==0) {
+        printf("Box h = %.9g\tBox w = %.9g\n", boxhgt, boxwid);
         if (fflag) fprintf(ff,"%.9g",netenergy);
         if (wflag) printf("netenergy = %.9g\n",netenergy);
       }
